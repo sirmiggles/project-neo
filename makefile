@@ -1,26 +1,36 @@
-#	Makefile for CITS3402 - High Performance Computing's Project I
-#	Project:		Matrix Operations
-#	Author:			Miguel Aries Sambat Tabadero (22240204)
-#	Version:		0.0.1
-#	Last Edited:	08/9/2019
+#	Makefile for CITS3402 - High Performance Computing's Project I		\
+	Project:		Matrix Operations									\
+	Author:			Miguel Aries Sambat Tabadero (22240204)				\
+	Version:		0.0.1												\
+	Last Edited:	08/9/2019
 
+#	*IMPORTANT*                                                         \
+	DO NOT REMOVE, MOVE, OR ALTER THIS MAKEFILE FROM THE ROOT FOLDER
+
+#	Changelog:															\
+	08/9/2019	-	Added dynamic variable makefile
+
+#	Compiler information and compile flags (cc for MacOS, gcc for Linux)
 CC    = gcc
-MAIN  = matrix
-OBJS  = matrix.o globals.o fileReader.o
 FLAGS = -fopenmp -Wall -Werror -pedantic
 
-matrix : $(OBJS)
-	$(CC) $(FLAGS) -o $(MAIN) $(OBJS)
+#	Target for compilation
+TARG     = matrix
 
-matrix.o : matrix.c matrix.h
-	$(CC) $(FLAGS) -c matrix.c
+OBJDIR   = obj
+SRCDIR   = src
+SRCFILES = $(wildcard $(SRCDIR)/*.c)
+HEADERS  = $(wildcard $(SRCDIR)/*.h)
 
-globals.o : globals.c matrix.h
-	$(CC) $(FLAGS) -c globals.c
+#	Target object files (.o)
+OBJS     = $(SRCFILES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
-fileReader.o : fileReader.c matrix.h
-	$(CC) $(FLAGS) -c fileReader.c
+$(TARG): $(OBJS)
+	$(CC) $(FLAGS) -o $(TARG) $(OBJS)
+	@echo "Successfully compiled " $<
+
+$(OBJS) : $(OBJDIR)/%.o : $(SRCDIR)/%.c $(HEADERS)
+	$(CC) $(FLAGS) -c $< -o $@
 
 clean :
-	rm -f $(OBJS) 
-
+	rm -f $(OBJS)
