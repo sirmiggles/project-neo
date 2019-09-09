@@ -6,8 +6,9 @@
 */
 
 #include <stdio.h>
-#include <getopt.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <getopt.h>
 
 enum MatrixType {
     ERR, 
@@ -37,9 +38,15 @@ struct Matrix {
 };
 typedef struct Matrix Matrix;
 
+/*  The constants defined in globals.c  */
 extern struct option EXEC_OPTIONS[];
 extern const char*  AUTHOR_SN;
 extern const int TH_FLAG_BUFSIZ;
+extern const int FILEPATH_MAX;
 extern const int DEFAULT_THREAD_COUNT;
 
+/*  Utility function definitions  */
 extern void usage(void);
+
+/*  File I/O function definitiions */
+extern bool fileExists(char*);

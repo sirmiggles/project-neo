@@ -21,9 +21,13 @@ struct option EXEC_OPTIONS[] = {
     {"t", required_argument, 0, TH}
 };
 
-const char* AUTHOR_SN = "22240204";
-const int TH_FLAG_BUFSIZ = 1000;
-const int DEFAULT_THREAD_COUNT = 4;
+const char* AUTHOR_SN = "22240204";                 //  User signature for when producing .out file
+
+const int TH_FLAG_BUFSIZ = 1000;                    //  Buffer size for taking in arguments for -t
+const int FILEPATH_MAX = 4096;                      //  Buffer size for file paths
+
+const int DEFAULT_THREAD_COUNT = 4;                 //  The default number of threads to create
+
 
 
 

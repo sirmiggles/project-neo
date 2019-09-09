@@ -15,6 +15,7 @@
 #include "matrix.h"
 
 int main(int argc, char **argv) {
+    //  If insufficient number of arguments, throw usage message
     if (argc < 3) {
         fprintf(stderr, "Invalid number of arguments\n");
         usage();
@@ -29,21 +30,23 @@ int main(int argc, char **argv) {
     bool mm = false;
     bool log = false;
 
-    int matrixCount = 0;        //  Number of matrices
-    printf("Matrix Count: %d\n", matrixCount);
+    int matrixCount = 0;        //  Current number of matrices
+    int requiredMatrices = 1;   //  Operations require at least 1.
 
     int numThreads;
     numThreads = DEFAULT_THREAD_COUNT;
-    printf("Number of Threads = %d\n", numThreads);
 
-    char* thOpt = calloc(TH_FLAG_BUFSIZ, sizeof(char));
+    char* filePath  = calloc(FILEPATH_MAX, sizeof(char)); 
+    char* thOpt     = calloc(TH_FLAG_BUFSIZ, sizeof(char));
 
     int opt, optIndex;
     //  Loop through execution options
     while ((opt = getopt_long_only(argc, argv, "", EXEC_OPTIONS, &optIndex)) != -1) {
         switch (opt) {
             case FN:
-                /*  Insert file I/O operations here  */
+                filePath = optarg;
+                printf("%s\n", filePath);
+                //  Use STRTOK to split args by spaces
                 break;
             
             case LOG :
@@ -52,11 +55,12 @@ int main(int argc, char **argv) {
 
             case TH:
                 //  get parameter, then convert parameter to int
+                //  make this into a function?
                 thOpt = optarg;
                 int val;
                 val = atoi(thOpt);
                 if (val < 1) {
-                    fprintf(stderr, "Invalid parameter for thread number");
+                    fprintf(stderr, "Invalid parameter for thread number\n");
                     return -1;
                 }
                 else {
@@ -75,6 +79,7 @@ int main(int argc, char **argv) {
 
             case AD:
                 ad = true;
+                requiredMatrices = 2;
                 break;
 
             case TS:
@@ -83,13 +88,20 @@ int main(int argc, char **argv) {
 
             case MM:
                 mm = true;
+                requiredMatrices = 2;
                 break;
 
             default :
-                //  Do nothing/ignore flag
                 break;
         }
     }
+
+    if (matrixCount < requiredMatrices) {
+        fprintf(stderr, "Error: Invalid Number of Matrices Provided\n");  
+        fprintf(stderr, "> %d provided, %d required\n", matrixCount, requiredMatrices);
+        return -1;
+    }
+
     int x = log - log;
     printf("SUM : %d\n", x = sc + tr + ad + ts + mm);            //  Simple checker for testing
     return x;
