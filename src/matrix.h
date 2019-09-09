@@ -19,6 +19,7 @@ enum EXEC_FLAG_VALUES {
     LOG  = 6
 };
 
+/*  Struct holding the key matrix information */
 struct Matrix {
     char* sourceFile;
     MatrixType dataType;
@@ -26,11 +27,9 @@ struct Matrix {
     int column;
     double** matrix;
 };
-
 typedef struct Matrix Matrix;
 
 extern struct option EXEC_OPTIONS[];
 extern const char*  AUTHOR_SN;
 
-
-extern Matrix getMatrixFromFile(char*);
+extern void usage(void);

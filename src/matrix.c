@@ -6,8 +6,9 @@
 #include <sys/time.h>
 
 int main(int argc, char **argv) {
-    if (argc < 2) {
-        fprintf(stderr, "Too few number of execution arguments/flags\n");
+    if (argc < 3) {
+        fprintf(stderr, "Invalid number of arguments\n");
+        usage();
         return -1;
     }
 
@@ -19,8 +20,9 @@ int main(int argc, char **argv) {
     bool mm = false;
     bool log = false;
 
+    int matrixCount = 0;        //  Number of matrices
+    printf("Matrix Count: %d\n", matrixCount);
     int opt, optIndex;
-    printf("Flags found are...\n");
     //  Loop through execution options
     while ((opt = getopt_long_only(argc, argv, "", EXEC_OPTIONS, &optIndex)) != -1) {
         printf("optind is %d\n", optind);
@@ -47,6 +49,7 @@ int main(int argc, char **argv) {
 
             case FN:
                 /*  Insert file I/O operations here  */
+                        
                 break;
             
             case LOG :
@@ -57,7 +60,6 @@ int main(int argc, char **argv) {
                 //  Do nothing/ignore flag
                 printf("%s is not a valid argument\n", argv[optind]);
                 break;
-                
         }
     }
     int x = log - log;
