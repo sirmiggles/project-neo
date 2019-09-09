@@ -25,8 +25,16 @@ int main(int argc, char **argv) {
     int opt, optIndex;
     //  Loop through execution options
     while ((opt = getopt_long_only(argc, argv, "", EXEC_OPTIONS, &optIndex)) != -1) {
-        printf("optind is %d\n", optind);
         switch (opt) {
+            case FN:
+                /*  Insert file I/O operations here  */
+                
+                break;
+            
+            case LOG :
+                log = true;
+                break;
+
             case SC:
                 sc = true;
                 break;
@@ -47,18 +55,9 @@ int main(int argc, char **argv) {
                 mm = true;
                 break;
 
-            case FN:
-                /*  Insert file I/O operations here  */
-                        
-                break;
-            
-            case LOG :
-                log = true;
-                break;
-
             default :
                 //  Do nothing/ignore flag
-                printf("%s is not a valid argument\n", argv[optind]);
+                printf("%s is not a valid argument\n", argv[optind-1]);
                 break;
         }
     }

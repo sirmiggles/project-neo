@@ -9,7 +9,8 @@
     {"ts", no_argument, 0, TS},
     {"mm", no_argument, 0, MM},
     {"f",  required_argument, 0, FN},
-    {"l",  no_argument, 0, LOG}    
+    {"l",  no_argument, 0, LOG},
+    {"th", required_argument, 0, TH}
 };
 
 const char* AUTHOR_SN = "22240204";

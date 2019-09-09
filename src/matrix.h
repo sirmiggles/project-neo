@@ -16,7 +16,8 @@ enum EXEC_FLAG_VALUES {
     TS = 3,
     MM = 4,
     FN = 5,
-    LOG  = 6
+    LOG  = 6,
+    TH = 7
 };
 
 /*  Struct holding the key matrix information */
