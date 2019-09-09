@@ -17,31 +17,50 @@ int main(int argc, char **argv) {
     bool ad = false;
     bool ts = false;
     bool mm = false;
+    bool log = false;
 
-    int opt, opt_index;
+    int opt, optIndex;
     printf("Flags found are...\n");
     //  Loop through execution options
-    while ((opt = getopt_long_only(argc, argv, "", EXEC_OPTIONS, &opt_index)) != -1) {
+    while ((opt = getopt_long_only(argc, argv, "", EXEC_OPTIONS, &optIndex)) != -1) {
+        printf("optind is %d\n", optind);
         switch (opt) {
             case SC:
-                printf("%d\n", SC);
+                sc = true;
                 break;
+
             case TR:
-                printf("%d\n", TR);
+                tr = true;
                 break;
+
             case AD:
-                printf("%d\n", AD);
+                ad = true;
                 break;
+
             case TS:
-                printf("%d\n", TS);
+                ts = true;
                 break;
+
             case MM:
-                printf("%d\n", MM);
+                mm = true;
                 break;
+
+            case FN:
+                /*  Insert file I/O operations here  */
+                break;
+            
+            case LOG :
+                log = true;
+                break;
+
             default :
-                printf("That's all folks!\n");
+                //  Do nothing/ignore flag
+                printf("%s is not a valid argument\n", argv[optind]);
                 break;
+                
         }
     }
-    return sc + tr + ad + ts + mm;
+    int x = log - log;
+    printf("SUM : %d\n", x = sc + tr + ad + ts + mm);            //  Simple checker for testing
+    return x;
 }
