@@ -9,7 +9,6 @@
 
 #include "matrix.h"
 
-
 //  Execution flags
 struct option EXEC_OPTIONS[] = {
     {"sc", no_argument, 0, SC},
@@ -23,8 +22,9 @@ struct option EXEC_OPTIONS[] = {
 };
 
 const char* AUTHOR_SN = "22240204";
-
 const int TH_FLAG_BUFSIZ = 1000;
+const int DEFAULT_THREAD_COUNT = 4;
+
 
 
 

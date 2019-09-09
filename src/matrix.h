@@ -40,5 +40,6 @@ typedef struct Matrix Matrix;
 extern struct option EXEC_OPTIONS[];
 extern const char*  AUTHOR_SN;
 extern const int TH_FLAG_BUFSIZ;
+extern const int DEFAULT_THREAD_COUNT;
 
 extern void usage(void);

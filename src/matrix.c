@@ -32,8 +32,8 @@ int main(int argc, char **argv) {
     int matrixCount = 0;        //  Number of matrices
     printf("Matrix Count: %d\n", matrixCount);
 
-    int numThreads;         //  Default value for a Surface Book I (dev. device)
-    numThreads = 4;
+    int numThreads;
+    numThreads = DEFAULT_THREAD_COUNT;
     printf("Number of Threads = %d\n", numThreads);
 
     char* thOpt = calloc(TH_FLAG_BUFSIZ, sizeof(char));
