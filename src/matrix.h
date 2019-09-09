@@ -9,14 +9,28 @@ enum MatrixType {
 };
 typedef enum MatrixType MatrixType;
 
+enum EXEC_FLAG_VALUES {
+    SC = 0,
+    TR = 1,
+    AD = 2,
+    TS = 3,
+    MM = 4,
+    FN = 5,
+    LOG  = 6
+};
+
 struct Matrix {
+    char* sourceFile;
     MatrixType dataType;
-    double* dim;
+    int width;
+    int column;
     double** matrix;
 };
+
 typedef struct Matrix Matrix;
 
-extern struct option execOptions[];
+extern struct option EXEC_OPTIONS[];
+extern const char*  AUTHOR_SN;
 
 
 extern Matrix getMatrixFromFile(char*);

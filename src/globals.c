@@ -2,15 +2,18 @@
 #include <getopt.h>
 
 //  Execution flags
-struct option execOptions[] = {
-    {"sc", no_argument, 0, 0},
-    {"tr", no_argument, 0, 0},
-    {"ad", no_argument, 0, 0},
-    {"ts", no_argument, 0, 0},
-    {"mm", no_argument, 0, 0},
-    {"f",  required_argument, 0, 0},
-    {"l",  no_argument, 0, 0}    
+ struct option EXEC_OPTIONS[] = {
+    {"sc", no_argument, 0, SC},
+    {"tr", no_argument, 0, TR},
+    {"ad", no_argument, 0, AD},
+    {"ts", no_argument, 0, TS},
+    {"mm", no_argument, 0, MM},
+    {"f",  required_argument, 0, FN},
+    {"l",  no_argument, 0, LOG}    
 };
+
+const char* AUTHOR_SN = "22240204";
+
 
 
 
