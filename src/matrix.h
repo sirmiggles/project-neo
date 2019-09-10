@@ -49,5 +49,5 @@ extern const int DEFAULT_THREAD_COUNT;
 extern void usage(void);
 
 /*  File I/O function definitiions */
-extern void parseFileNames(int*, char**);
+extern void parseFileName(int*, char*);
 extern bool fileAccessible(char*);

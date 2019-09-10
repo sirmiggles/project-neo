@@ -39,9 +39,11 @@ int main(int argc, char **argv) {
     numThreads = DEFAULT_THREAD_COUNT;
     char* thOpt     = calloc(TH_FLAG_BUFSIZ, sizeof(char));
     
+    /*
     char* fileNames[2];
     fileNames[0] = calloc(FILEPATH_MAX, sizeof(char));
     fileNames[1] = calloc(FILEPATH_MAX, sizeof(char));
+    */
 
     int opt, optIndex;
     //  Loop through execution options
@@ -49,11 +51,7 @@ int main(int argc, char **argv) {
         switch (opt) {
             case FN:
                 for(int index = optind - 1 ; index < argc && *argv[index] != '-'; index++) {
-                    strcpy(fileNames[matrixCount], argv[index]);
-                    matrixCount++;
-                    if (matrixCount >= 2) {
-                        break;
-                    }
+                    parseFileName(&matrixCount, argv[index]);
                 }
                 break;
             
