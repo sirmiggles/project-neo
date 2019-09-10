@@ -10,9 +10,8 @@
 
 #include "matrix.h"
 
-char** parseFileNames(int* matrixCount, char* fileNames[2]) {
-    char **fn = fileNames;
-    return fn;
+void parseFileNames(int& matrixCount, char& fileNames[2], ) {
+    return;
 }
 
 /*  Check if file exists and can be read */
