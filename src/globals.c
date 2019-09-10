@@ -27,9 +27,3 @@ const int TH_FLAG_BUFSIZ = 1000;                    //  Buffer size for taking i
 const int FILEPATH_MAX = 4096;                      //  Buffer size for file paths
 
 const int DEFAULT_THREAD_COUNT = 4;                 //  The default number of threads to create
-
-
-
-
-
-
