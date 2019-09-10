@@ -3,7 +3,7 @@
     Description:    Main C File for matrix
                     > Contains the entry point (main) for the program
     Author:         MIGUEL ARIES SAMBAT TABADERO (22240204)
-    Last Modified:  09/9/2019
+    Last Modified:  10/9/2019
 */
 
 #include <stdio.h>
@@ -38,16 +38,22 @@ int main(int argc, char **argv) {
     int numThreads;
     numThreads = DEFAULT_THREAD_COUNT;
     char* thOpt     = calloc(TH_FLAG_BUFSIZ, sizeof(char));
+    
+    char* fileNames[2];
+    fileNames[0] = calloc(FILEPATH_MAX, sizeof(char));
+    fileNames[1] = calloc(FILEPATH_MAX, sizeof(char));
 
     int opt, optIndex;
     //  Loop through execution options
     while ((opt = getopt_long_only(argc, argv, "", EXEC_OPTIONS, &optIndex)) != -1) {
         switch (opt) {
             case FN:
-                optind--;
-                for(; optind < argc && *argv[optind] != '-'; optind++) {
-                    printf("%s\n", argv[optind]);
+                for(int index = optind - 1 ; index < argc && *argv[index] != '-'; index++) {
+                    strcpy(fileNames[matrixCount], argv[index]);
                     matrixCount++;
+                    if (matrixCount >= 2) {
+                        break;
+                    }
                 }
                 break;
             
@@ -99,7 +105,13 @@ int main(int argc, char **argv) {
     }
 
     if (matrixCount < requiredMatrices) {
-        fprintf(stderr, "Error: Invalid Number of Matrices Provided\n");  
+        fprintf(stderr, "Error: Insufficient Number of Matrices Provided\n");  
+        fprintf(stderr, "> %d provided, %d required\n", matrixCount, requiredMatrices);
+        return -1;
+    }
+
+    if (matrixCount >= 2) {
+        fprintf(stderr, "Error: Too Many Matrix File Arguments\n");
         fprintf(stderr, "> %d provided, %d required\n", matrixCount, requiredMatrices);
         return -1;
     }
