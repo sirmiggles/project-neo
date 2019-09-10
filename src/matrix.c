@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include <errno.h>
 #include <unistd.h>
+#include <string.h>
 #include <sys/time.h>
 
 #include "matrix.h"
@@ -28,15 +29,14 @@ int main(int argc, char **argv) {
     bool ad = false;
     bool ts = false;
     bool mm = false;
-    bool log = false;
+
+    bool log = false;           //  Will the execution output a log file
 
     int matrixCount = 0;        //  Current number of matrices
     int requiredMatrices = 1;   //  Operations require at least 1.
 
     int numThreads;
     numThreads = DEFAULT_THREAD_COUNT;
-
-    char* filePath  = calloc(FILEPATH_MAX, sizeof(char)); 
     char* thOpt     = calloc(TH_FLAG_BUFSIZ, sizeof(char));
 
     int opt, optIndex;
@@ -44,9 +44,11 @@ int main(int argc, char **argv) {
     while ((opt = getopt_long_only(argc, argv, "", EXEC_OPTIONS, &optIndex)) != -1) {
         switch (opt) {
             case FN:
-                filePath = optarg;
-                printf("%s\n", filePath);
-                //  Use STRTOK to split args by spaces
+                optind--;
+                for(; optind < argc && *argv[optind] != '-'; optind++) {
+                    printf("%s\n", argv[optind]);
+                    matrixCount++;
+                }
                 break;
             
             case LOG :
