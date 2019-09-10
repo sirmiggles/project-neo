@@ -49,4 +49,4 @@ extern const int DEFAULT_THREAD_COUNT;
 extern void usage(void);
 
 /*  File I/O function definitiions */
-extern bool fileExists(char*);
+extern bool fileAccessible(char*);
