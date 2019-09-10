@@ -10,6 +10,11 @@
 
 #include "matrix.h"
 
+char** parseFileNames(int* matrixCount, char* fileNames[2]) {
+    char **fn = fileNames;
+    return fn;
+}
+
 /*  Check if file exists and can be read */
 bool fileAccessible(char* fileName) {
     return (access(fileName, F_OK) != -1 && access(fileName, R_OK) != -1)   \
