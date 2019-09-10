@@ -11,7 +11,7 @@
 #include <getopt.h>
 
 enum MatrixType {
-    ERR, 
+    ERR = -1, 
     INT, 
     FLOAT
 };
