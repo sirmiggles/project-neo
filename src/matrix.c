@@ -105,17 +105,9 @@ int main(int argc, char **argv) {
         matrixCount = 1;
     }
 
-    FILE* matrixFile1;
-    matrixFile1 = fopen(fileNames[0], "r");
-    if (matrixFile1 == NULL) {
-        fprintf(stderr, "Error opening file");
-    }
-
-    char c;
-    while ((c = fgetc(matrixFile1)) != '\0') {
-        if (feof(matrixFile1))
-            break;
-        printf("%c", c);
+    FILE** readFiles = calloc(matrixCount, sizeof(FILE));
+    for (int i = 0; i < matrixCount; i++) {
+        readFiles[i] = fopen(fileNames[i], "r");
     }
     
     printf("Log?: %s\n", (log) ? "true" : "false");
