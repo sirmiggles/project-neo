@@ -23,25 +23,24 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    enum EXEC_FLAG_VALUES efv;          //  Execution flag value, based on enum
-    bool operationFound = false;        //  Checker for if an exec. flag has been found
-    bool log = false;                   //  Will the execution output a log file
+    enum EXEC_FLAG_VALUES efv = UD;         //  Execution flag value, based on enum
+    bool operationFound = false;            //  Checker for if an exec. flag has been found
+    bool log = false;                       //  Will the execution output a log file
 
-    int matrixCount = 0;                //  Current number of matrices
-    int requiredMatrices = 1;           //  Operations require at least 1.
+    int matrixCount = 0;                    //  Current number of matrices
+    int requiredMatrices = 1;               //  Operations require at least 1.
 
-    int numThreads;
+    int numThreads;                         //  The default number of threads that the program will run in
     numThreads = DEFAULT_THREAD_COUNT;
 
-    char* thOpt     = calloc(FLAG_ARG_BUFSIZ, sizeof(char));
-    char* flagArg   = calloc(FLAG_ARG_BUFSIZ, sizeof(char));
+    char* thOpt     = calloc(FLAG_ARG_BUFSIZ, sizeof(char));    //  -t argument buffer
+    char* flagArg   = calloc(FLAG_ARG_BUFSIZ, sizeof(char));    //  -sm argument buffer
     float scalar = 0.0;
     
-    /*
     char* fileNames[2];
     fileNames[0] = calloc(FILEPATH_MAX, sizeof(char));
     fileNames[1] = calloc(FILEPATH_MAX, sizeof(char));
-    */
+    int fnIndex = 0;
 
     int opt, optIndex;
     //  Loop through execution options
@@ -50,7 +49,7 @@ int main(int argc, char **argv) {
             switch (opt) {
                 case FN:
                     for(int index = optind - 1; index < argc && *argv[index] != '-'; index++) {
-                        parseFileName(&matrixCount, argv[index]);
+                        parseFileName(&matrixCount, argv[index], fileNames[fnIndex++]);
                     }
                     break;
                 
@@ -64,6 +63,7 @@ int main(int argc, char **argv) {
                         fprintf(stderr, "Number of threads should be greater than 0 and an integer\n");
                         return -1;
                     }
+                    break;
             }
         }
         else {
@@ -74,6 +74,11 @@ int main(int argc, char **argv) {
                     fprintf(stderr, "Scalar factor must not be 0.0\n");
                     return -1;
                 }
+                operationFound = true;
+                continue;
+            }
+            if (efv == AD || efv == MM) {
+                requiredMatrices = 2;
             }
             operationFound = true;
         }
@@ -81,15 +86,22 @@ int main(int argc, char **argv) {
     //  Free the buffer files for reading command line arguments
     free(thOpt);
     free(flagArg);
-    
-    if (!sufficientArgs(matrixCount, requiredMatrices)) {
-        fprintf(stderr, "Incorrect number of matrices:\n");
-        fprintf(stderr, "> %d provided : %d required\n", matrixCount, requiredMatrices);
-    }
 
+    //  If no operations are found, exit
     if (!operationFound) {
         fprintf(stderr, "No matrix operations specified\n");
         return -1;
+    }
+
+    if (!sufficientArgs(matrixCount, requiredMatrices)) {
+        fprintf(stderr, "Incorrect number of matrices:\n");
+        fprintf(stderr, "> %d provided : %d required\n", matrixCount, requiredMatrices);
+        return -1;
+    }
+
+    //  Free Unnecessarily allocated second file name
+    if (requiredMatrices < 2) {
+        free(fileNames[1]);
     }
 
     printf("Log?: %s\n", (log) ? "true" : "false");

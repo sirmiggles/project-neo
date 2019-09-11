@@ -7,17 +7,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "matrix.h"
 
 /*  Parses the file name to check if it's valid  */
-void parseFileName(int *matrixCount, char* fileName) {
-    bool fileIsAccessible = fileAccessible(fileName);
-    printf("%s\n", (fileIsAccessible) ? "true" : "false");
+void parseFileName(int *matrixCount, char* passedArgument, char* progFileName) {
+    bool fileIsAccessible = fileAccessible(passedArgument);
     if (fileIsAccessible) {
+        strcpy(progFileName, passedArgument);
         (*matrixCount)++;
     }
-    printf("%d\n", *matrixCount);
 }
 
 /*  Check if file exists and can be read */

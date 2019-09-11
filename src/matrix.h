@@ -53,5 +53,5 @@ extern int      setNumberOfThreads(char*);
 extern float    getScalarFactor(char*);
 
 /*  File I/O function definitiions */
-extern void parseFileName(int*, char*);
+extern void parseFileName(int*, char*, char*);
 extern bool fileAccessible(char*);
