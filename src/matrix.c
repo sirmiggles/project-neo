@@ -100,10 +100,24 @@ int main(int argc, char **argv) {
     }
 
     //  Free Unnecessarily allocated second file name
-    if (requiredMatrices < 2) {
+    if (requiredMatrices < 2 && matrixCount < 2) {
         free(fileNames[1]);
+        matrixCount = 1;
     }
 
+    FILE* matrixFile1;
+    matrixFile1 = fopen(fileNames[0], "r");
+    if (matrixFile1 == NULL) {
+        fprintf(stderr, "Error opening file");
+    }
+
+    char c;
+    while ((c = fgetc(matrixFile1)) != '\0') {
+        if (feof(matrixFile1))
+            break;
+        printf("%c", c);
+    }
+    
     printf("Log?: %s\n", (log) ? "true" : "false");
     printf("Operation: %d\n", efv);          //  Simple checker for testing
     return 0;
