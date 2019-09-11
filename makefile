@@ -12,7 +12,7 @@
 
 #	Compiler information and compile flags (cc for MacOS, gcc for Linux)
 CC    = gcc
-FLAGS = -fopenmp -Wall -Werror -pedantic
+FLAGS = -fopenmp -Wall -Werror -pedantic -std=c99 -O2
 
 #	Target for compilation
 TARG     = matrix
