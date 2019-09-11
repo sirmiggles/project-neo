@@ -55,3 +55,5 @@ extern float    getScalarFactor(char*);
 /*  File I/O function definitiions */
 extern void parseFileName(int*, char*, char*);
 extern bool fileAccessible(char*);
+extern void openFiles(FILE**, char**, int);
+extern void closeFiles(FILE**, int);

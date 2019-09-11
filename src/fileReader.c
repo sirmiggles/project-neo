@@ -25,3 +25,17 @@ bool fileAccessible(char* fileName) {
     return (access(fileName, F_OK) != -1 && access(fileName, R_OK) != -1)   \
             ? true : false;
 }
+
+/*  Add the opened files to the file array  */
+void openFiles(FILE** files, char** fileNames, int numFiles) {
+    for (int i = 0; i < numFiles; i++) {
+        files[i] = fopen(fileNames[i], "r");
+    }
+}
+
+/*  Close the files in the file array  */
+void closeFiles(FILE** files, int numFiles) {
+    for (int i = 0; i < numFiles; i++) {
+        fclose(files[i]);
+    }
+}

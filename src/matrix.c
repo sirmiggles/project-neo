@@ -106,10 +106,21 @@ int main(int argc, char **argv) {
     }
 
     FILE** readFiles = calloc(matrixCount, sizeof(FILE));
+    openFiles(readFiles, fileNames, matrixCount);
+
     for (int i = 0; i < matrixCount; i++) {
-        readFiles[i] = fopen(fileNames[i], "r");
+        printf("File %d:\n", i);
+        char c;
+        while ((c = fgetc(readFiles[i])) != '\0') {
+            if (feof(readFiles[i]))
+                break;
+            printf("%c", c);
+        }
+        printf("\n");
     }
-    
+
+    closeFiles(readFiles, matrixCount);
+
     printf("Log?: %s\n", (log) ? "true" : "false");
     printf("Operation: %d\n", efv);          //  Simple checker for testing
     return 0;
