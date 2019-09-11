@@ -18,14 +18,15 @@ enum MatrixType {
 typedef enum MatrixType MatrixType;
 
 enum EXEC_FLAG_VALUES {
-    SC = 0,
-    TR = 1,
-    AD = 2,
-    TS = 3,
-    MM = 4,
-    FN = 5,
-    LOG  = 6,
-    TH = 7
+    UD = -1,
+    SC,
+    TR,
+    AD,
+    TS,
+    MM,
+    FN,
+    LOG,
+    TH
 };
 
 /*  Struct holding the key matrix information */

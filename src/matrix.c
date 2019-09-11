@@ -23,17 +23,11 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    //  Execution flag booleans
-    bool sc = false;
-    bool tr = false;
-    bool ad = false;
-    bool ts = false;
-    bool mm = false;
+    enum EXEC_FLAG_VALUES efv;          //  Execution flag value, based on enum
+    bool log = false;                   //  Will the execution output a log file
 
-    bool log = false;           //  Will the execution output a log file
-
-    int matrixCount = 0;        //  Current number of matrices
-    int requiredMatrices = 1;   //  Operations require at least 1.
+    int matrixCount = 0;                //  Current number of matrices
+    int requiredMatrices = 1;           //  Operations require at least 1.
 
     int numThreads;
     numThreads = DEFAULT_THREAD_COUNT;
@@ -48,57 +42,37 @@ int main(int argc, char **argv) {
     int opt, optIndex;
     //  Loop through execution options
     while ((opt = getopt_long_only(argc, argv, "", EXEC_OPTIONS, &optIndex)) != -1) {
-        switch (opt) {
-            case FN:
-                for(int index = optind - 1 ; index < argc && *argv[index] != '-'; index++) {
-                    parseFileName(&matrixCount, argv[index]);
-                }
-                break;
-            
-            case LOG :
-                log = true;
-                break;
+        if (opt == FN || opt == LOG || opt == TH) {
+            switch (opt) {
+                case FN:
+                    for(int index = optind - 1 ; index < argc && *argv[index] != '-'; index++) {
+                        parseFileName(&matrixCount, argv[index]);
+                    }
+                    break;
+                
+                case LOG :
+                    log = true;
+                    break;
 
-            case TH:
-                //  get parameter, then convert parameter to int
-                //  make this into a function?
-                thOpt = optarg;
-                int val;
-                val = atoi(thOpt);
-                if (val < 1) {
-                    fprintf(stderr, "Invalid parameter for thread number\n");
-                    return -1;
-                }
-                else {
-                    printf("Number of threads changed from %d to %d\n", numThreads, val);
-                    numThreads = val;
-                }
-                break;
-
-            case SC:
-                sc = true;
-                break;
-
-            case TR:
-                tr = true;
-                break;
-
-            case AD:
-                ad = true;
-                requiredMatrices = 2;
-                break;
-
-            case TS:
-                ts = true;
-                break;
-
-            case MM:
-                mm = true;
-                requiredMatrices = 2;
-                break;
-
-            default :
-                break;
+                case TH:
+                    //  get parameter, then convert parameter to int
+                    //  make this into a function?
+                    thOpt = optarg;
+                    int val;
+                    val = atoi(thOpt);
+                    if (val < 1) {
+                        fprintf(stderr, "Invalid parameter for thread number\n");
+                        return -1;
+                    }
+                    else {
+                        printf("Number of threads changed from %d to %d\n", numThreads, val);
+                        numThreads = val;
+                    }
+                    break;
+            }
+        }
+        else {
+            efv = opt;
         }
     }
 
@@ -107,7 +81,7 @@ int main(int argc, char **argv) {
         printf("> %d provided : %d required\n", matrixCount, requiredMatrices);
     }
 
-    int x = log - log;
-    printf("SUM : %d\n", x = sc + tr + ad + ts + mm);            //  Simple checker for testing
-    return x;
+    printf("Log?: %s\n", (log) ? "true" : "false");
+    printf("Operation: %d\n", efv);          //  Simple checker for testing
+    return 0;
 }
