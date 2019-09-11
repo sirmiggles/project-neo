@@ -32,3 +32,14 @@ void usage(void) {
 bool sufficientArgs(int numProvided, int numRequired) {
     return (numProvided != numRequired) ? false : true;
 }
+
+/*  Sets number of threads to be used in program execution (not omp)  */
+int setNumberOfThreads(char* newNumThreads) {
+    int val;
+    if ((val = atoi(newNumThreads)) != 0) {
+        return (val > 0) ? val : 0;
+    }
+    else {
+        return -1;
+    }
+}

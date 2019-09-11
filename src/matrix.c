@@ -55,20 +55,11 @@ int main(int argc, char **argv) {
                     break;
 
                 case TH:
-                    //  get parameter, then convert parameter to int
-                    //  make this into a function?
-                    thOpt = optarg;
-                    int val;
-                    val = atoi(thOpt);
-                    if (val < 1) {
-                        fprintf(stderr, "Invalid parameter for thread number\n");
+                    strcpy(thOpt, optarg);
+                    if ((numThreads = setNumberOfThreads(thOpt)) < 1) {
+                        fprintf(stderr, "Number of threads should be greater than 0 and an integer\n");
                         return -1;
                     }
-                    else {
-                        printf("Number of threads changed from %d to %d\n", numThreads, val);
-                        numThreads = val;
-                    }
-                    break;
             }
         }
         else {

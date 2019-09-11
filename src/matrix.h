@@ -49,6 +49,7 @@ extern const int DEFAULT_THREAD_COUNT;
 /*  Utility function definitions  */
 extern void usage(void);
 extern bool sufficientArgs(int, int);
+extern int  setNumberOfThreads(char*);
 
 /*  File I/O function definitiions */
 extern void parseFileName(int*, char*);
