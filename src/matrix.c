@@ -102,16 +102,9 @@ int main(int argc, char **argv) {
         }
     }
 
-    if (matrixCount < requiredMatrices) {
-        fprintf(stderr, "Error: Insufficient Number of Matrices Provided\n");  
-        fprintf(stderr, "> %d provided, %d required\n", matrixCount, requiredMatrices);
-        return -1;
-    }
-
-    if (matrixCount >= 2) {
-        fprintf(stderr, "Error: Too Many Matrix File Arguments\n");
-        fprintf(stderr, "> %d provided, %d required\n", matrixCount, requiredMatrices);
-        return -1;
+    if (!sufficientArgs(matrixCount, requiredMatrices)) {
+        printf("Incorrect number of matrices:\n");
+        printf("> %d provided : %d required\n", matrixCount, requiredMatrices);
     }
 
     int x = log - log;

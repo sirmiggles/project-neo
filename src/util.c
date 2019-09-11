@@ -27,3 +27,8 @@ void usage(void) {
     fprintf(stderr, "  -ad, -a          ||    add two matrices\n");
     fprintf(stderr, "  -mm, -m          ||    perform matrix multiplication with two matrices\n");
 }
+
+/*  Checks if there are an appropriate number of arguments provided */
+bool sufficientArgs(int numProvided, int numRequired) {
+    return (numProvided != numRequired) ? false : true;
+}
