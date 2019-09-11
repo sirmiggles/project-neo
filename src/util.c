@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <errno.h>
+#include <string.h>
 
 #include "matrix.h"
 
@@ -39,7 +40,14 @@ int setNumberOfThreads(char* newNumThreads) {
     if ((val = atoi(newNumThreads)) != 0) {
         return (val > 0) ? val : 0;
     }
-    else {
-        return -1;
+    return -1;
+}
+
+/*  Converts the scalar parameter for -sm  */
+float getScalarFactor(char* scalarFactor) {
+    float val;
+    if ((val = atof(scalarFactor)) != 0) {
+        return val;
     }
+    return 0.0;
 }

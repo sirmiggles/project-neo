@@ -19,7 +19,7 @@ typedef enum MatrixType MatrixType;
 
 enum EXEC_FLAG_VALUES {
     UD = -1,
-    SC,
+    SM,
     TR,
     AD,
     TS,
@@ -42,14 +42,15 @@ typedef struct Matrix Matrix;
 /*  The constants defined in globals.c  */
 extern struct option EXEC_OPTIONS[];
 extern const char*  AUTHOR_SN;
-extern const int TH_FLAG_BUFSIZ;
+extern const int FLAG_ARG_BUFSIZ;
 extern const int FILEPATH_MAX;
 extern const int DEFAULT_THREAD_COUNT;
 
 /*  Utility function definitions  */
-extern void usage(void);
-extern bool sufficientArgs(int, int);
-extern int  setNumberOfThreads(char*);
+extern void     usage(void);
+extern bool     sufficientArgs(int, int);
+extern int      setNumberOfThreads(char*);
+extern float    getScalarFactor(char*);
 
 /*  File I/O function definitiions */
 extern void parseFileName(int*, char*);

@@ -2,7 +2,7 @@
     Name:           fileReader.c
     Description:    Contains the functions for File I/O
     Author:         MIGUEL ARIES SAMBAT TABADERO (22240204)
-    Last Modified:  09/9/2019
+    Last Modified:  11/9/2019
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,8 +10,14 @@
 
 #include "matrix.h"
 
-void parseFileNames(int& matrixCount, char& fileNames[2], ) {
-    return;
+/*  Parses the file name to check if it's valid  */
+void parseFileName(int *matrixCount, char* fileName) {
+    bool fileIsAccessible = fileAccessible(fileName);
+    printf("%s\n", (fileIsAccessible) ? "true" : "false");
+    if (fileIsAccessible) {
+        (*matrixCount)++;
+    }
+    printf("%d\n", *matrixCount);
 }
 
 /*  Check if file exists and can be read */

@@ -11,7 +11,7 @@
 
 //  Execution flags
 struct option EXEC_OPTIONS[] = {
-    {"sc", no_argument, 0, SC},
+    {"sm", required_argument, 0, SM},
     {"tr", no_argument, 0, TR},
     {"ad", no_argument, 0, AD},
     {"ts", no_argument, 0, TS},
@@ -23,7 +23,7 @@ struct option EXEC_OPTIONS[] = {
 
 const char* AUTHOR_SN = "22240204";                 //  User signature for when producing .out file
 
-const int TH_FLAG_BUFSIZ = 1000;                    //  Buffer size for taking in arguments for -t
+const int FLAG_ARG_BUFSIZ = 1000;                    //  Buffer size for taking in arguments for -t
 const int FILEPATH_MAX = 4096;                      //  Buffer size for file paths
 
 const int DEFAULT_THREAD_COUNT = 4;                 //  The default number of threads to create

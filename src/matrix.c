@@ -24,6 +24,7 @@ int main(int argc, char **argv) {
     }
 
     enum EXEC_FLAG_VALUES efv;          //  Execution flag value, based on enum
+    bool operationFound = false;        //  Checker for if an exec. flag has been found
     bool log = false;                   //  Will the execution output a log file
 
     int matrixCount = 0;                //  Current number of matrices
@@ -31,7 +32,10 @@ int main(int argc, char **argv) {
 
     int numThreads;
     numThreads = DEFAULT_THREAD_COUNT;
-    char* thOpt     = calloc(TH_FLAG_BUFSIZ, sizeof(char));
+
+    char* thOpt     = calloc(FLAG_ARG_BUFSIZ, sizeof(char));
+    char* flagArg   = calloc(FLAG_ARG_BUFSIZ, sizeof(char));
+    float scalar = 0.0;
     
     /*
     char* fileNames[2];
@@ -45,7 +49,7 @@ int main(int argc, char **argv) {
         if (opt == FN || opt == LOG || opt == TH) {
             switch (opt) {
                 case FN:
-                    for(int index = optind - 1 ; index < argc && *argv[index] != '-'; index++) {
+                    for(int index = optind - 1; index < argc && *argv[index] != '-'; index++) {
                         parseFileName(&matrixCount, argv[index]);
                     }
                     break;
@@ -64,12 +68,28 @@ int main(int argc, char **argv) {
         }
         else {
             efv = opt;
+            if (efv == SM) {
+                strcpy(flagArg, optarg);
+                if ((scalar = getScalarFactor(flagArg)) == 0.0 ) {
+                    fprintf(stderr, "Scalar factor must not be 0.0\n");
+                    return -1;
+                }
+            }
+            operationFound = true;
         }
     }
-
+    //  Free the buffer files for reading command line arguments
+    free(thOpt);
+    free(flagArg);
+    
     if (!sufficientArgs(matrixCount, requiredMatrices)) {
-        printf("Incorrect number of matrices:\n");
-        printf("> %d provided : %d required\n", matrixCount, requiredMatrices);
+        fprintf(stderr, "Incorrect number of matrices:\n");
+        fprintf(stderr, "> %d provided : %d required\n", matrixCount, requiredMatrices);
+    }
+
+    if (!operationFound) {
+        fprintf(stderr, "No matrix operations specified\n");
+        return -1;
     }
 
     printf("Log?: %s\n", (log) ? "true" : "false");
