@@ -26,5 +26,6 @@ const char* AUTHOR_SN = "22240204";                 //  User signature for when 
 const int FLAG_ARG_BUFSIZ   = 1000;                 //  Buffer size for taking in arguments for -t
 const int FILEPATH_MAX      = 4096;                 //  Buffer size for file paths
 const int DIM_BUFSIZ        = 256;                  //  Maximum characters for the dimensions lines
+const int ELEMENT_SIZE      = 256;                  //  Maximum No. of characters for an element;
 
 const int DEFAULT_THREAD_COUNT = 4;                 //  The default number of threads to create

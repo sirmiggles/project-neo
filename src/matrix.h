@@ -29,13 +29,20 @@ enum EXEC_FLAG_VALUES {
     TH
 };
 
+struct CoordForm {
+    int i;
+    int j;
+    float value;
+};
+typedef struct CoordForm CoordForm;
+
 /*  Struct holding the key matrix information */
 struct Matrix {
-    char* sourceFile;
-    MatrixType dataType;
-    int numRows;
-    int numCols;
-    double** matrix;
+    char*       sourceFile;
+    MatrixType  type;
+    int         numRows;
+    int         numCols;
+    CoordForm*  coo;
 };
 typedef struct Matrix Matrix;
 
@@ -45,6 +52,7 @@ extern const char*  AUTHOR_SN;
 extern const int FLAG_ARG_BUFSIZ;
 extern const int FILEPATH_MAX;
 extern const int DIM_BUFSIZ;
+extern const int ELEMENT_SIZE;
 extern const int DEFAULT_THREAD_COUNT;
 
 /*  Utility function definitions  */
@@ -59,4 +67,5 @@ extern bool     fileAccessible(char*);
 extern void     openFiles(FILE**, char**, int);
 extern void     closeFiles(FILE**, int);
 extern void     parseMatrixFile(FILE*, Matrix*, char*);
-extern void     allocateDataType(char*, Matrix*);
+extern void     allocateDataType(Matrix*, char*);
+extern void     allocateDimensions(Matrix*, char*, char*);

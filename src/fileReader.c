@@ -41,16 +41,18 @@ void closeFiles(FILE** files, int numFiles) {
 }
 
 /*  Converts the said file into a matrix format  */
-void parseMatrixFile(FILE* matrixFile, Matrix* destMatrix, char* fileName) {
+void parseMatrixFile(FILE* matrixFile, Matrix* targetMatrix, char* fileName) {
     int err;
     char* strMatType = (char *) calloc(5, sizeof(char));
     err = fscanf(matrixFile,"%s", strMatType);
     if (err != 1) {
+        free(strMatType);
+        targetMatrix->type = ERR;
         return;
     }
-    allocateDataType(strMatType, destMatrix);
+    allocateDataType(targetMatrix, strMatType);
     free(strMatType);                               //  Free strMatType as it is no longer needed
-    if (destMatrix->dataType == ERR) {
+    if (targetMatrix->type == ERR) {
         return;
     }
 
@@ -58,9 +60,11 @@ void parseMatrixFile(FILE* matrixFile, Matrix* destMatrix, char* fileName) {
     char* strNumCols = (char*) malloc(DIM_BUFSIZ);
 
     if (strNumRows == NULL || strNumCols == NULL) {
+        fprintf(stderr, "Error could no allocate memory for matrix conversion\n");
+        targetMatrix->type = ERR;
         return;
     }
-
+    /*  Read the dimensions and add them in */
     err = fscanf(matrixFile, "%s %s", strNumRows, strNumCols);    
     if (err != 2) {
         free(strNumRows);
@@ -68,28 +72,65 @@ void parseMatrixFile(FILE* matrixFile, Matrix* destMatrix, char* fileName) {
         return;
     }
 
-    int numRows = strToInt(strNumRows);
-    int numCols = strToInt(strNumCols);
-    if (numRows < 0 || numCols < 0) {
+    allocateDimensions(targetMatrix, strNumRows, strNumCols);
+    if (targetMatrix->type == ERR) {
         return;
     }
 
-    destMatrix->numRows = numRows;
-    destMatrix->numCols = numCols;
+    long int numElements = targetMatrix->numCols * targetMatrix->numRows;
+    targetMatrix->coo = malloc(sizeof(CoordForm) * numElements);
+    int i = 0, j = 0;
+    char* strElement = (char *) malloc(sizeof(char) * ELEMENT_SIZE);
+    for (int k = 0; k < numElements; k++) {
+        int errno = fscanf(matrixFile, "%s ", strElement);
+        if (errno != 1) {
+            fprintf(stderr, "Error: Could not read value");
+            return;
+        }
+        char* temp;
+        float val = strtod(strElement, &temp);
+        CoordForm c = {i, j, val};
+        targetMatrix->coo[k] = c;
+        if (i > 0 && i % targetMatrix->numCols == 0) {
+            j++;
+        }
+    }
+    printf("[");
+    for (int k = 0; k < numElements; k++) {
+        printf("(%d, %d, %10.6f)", targetMatrix->coo->i, targetMatrix->coo->j, targetMatrix->coo->value);
+        if (k + 1 != numElements) {
+            printf(", ");
+        }
+    }
+    printf("]\n");
 }
 
 /*  Allocate a matrixType to the destination matrix  */
-void allocateDataType(char* matType, Matrix* destMatrix) {
+void allocateDataType(Matrix* targetMatrix, char* matType) {
     if (strcmp(matType, "int") == 0) {
-        destMatrix->dataType = INT;
+        targetMatrix->type = INT;
         return;
     }
     else if (strcmp(matType, "float") == 0) {
-        destMatrix->dataType = FLOAT;
+        targetMatrix->type = FLOAT;
         return;
     }
     else {
-        destMatrix->dataType = ERR;
+        targetMatrix->type = ERR;
         return;
+    }
+}
+
+void allocateDimensions(Matrix* targetMatrix, char* strNumRows, char* strNumCols) {
+    int numRows = strToInt(strNumRows);
+    int numCols = strToInt(strNumCols);
+    //  If any dimensions are invalid -- don't do them anymore
+    if (numRows < 0 || numCols < 0) {
+        targetMatrix->type = ERR;
+        return;
+    }
+    else {
+        targetMatrix->numRows = numRows;
+        targetMatrix->numCols = numCols;
     }
 }
