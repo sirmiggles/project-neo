@@ -95,14 +95,6 @@ void parseMatrixFile(FILE* matrixFile, Matrix* targetMatrix, char* fileName) {
             j++;
         }
     }
-    printf("[");
-    for (int k = 0; k < numElements; k++) {
-        printf("(%d, %d, %10.6f)", targetMatrix->coo->i, targetMatrix->coo->j, targetMatrix->coo->value);
-        if (k + 1 != numElements) {
-            printf(", ");
-        }
-    }
-    printf("]\n");
 }
 
 /*  Allocate a matrixType to the destination matrix  */

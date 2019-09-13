@@ -60,7 +60,6 @@ extern void     usage(void);
 extern bool     sufficientArgs(int, int);
 extern int      strToInt(char*);
 
-
 /*  File I/O function definitiions */
 extern void     parseFileName(int*, char*, char*);
 extern bool     fileAccessible(char*);
@@ -69,3 +68,6 @@ extern void     closeFiles(FILE**, int);
 extern void     parseMatrixFile(FILE*, Matrix*, char*);
 extern void     allocateDataType(Matrix*, char*);
 extern void     allocateDimensions(Matrix*, char*, char*);
+
+/*  Matrix operation functions definitions  */
+extern float    trace(Matrix, int);

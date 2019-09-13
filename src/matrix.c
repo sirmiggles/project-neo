@@ -111,11 +111,16 @@ int main(int argc, char **argv) {
     closeFiles(readFiles, matrixCount);
     gettimeofday(&end, NULL);
 
-    double delta;
-    delta = ((end.tv_sec  - start.tv_sec) * 1000000u +
+    double delta_files;
+    delta_files = ((end.tv_sec  - start.tv_sec) * 1000000u +
            end.tv_usec - start.tv_usec) / 1.e6;
-    
-    printf("Executed in %10.6fs\n", delta);
+
+    printf("Files Processed in %10.6fs\n", delta_files);
+        
+    for (int i = 0; i < matrixCount; i++) {
+        printf("Trace for Matrix %d : %10.6f", i, trace(matrices[i], numThreads));
+    }
+
     printf("Log? %d\n", log);
     printf("Operation: %d\n", efv);          //  Simple checker for testing
     return 0;
