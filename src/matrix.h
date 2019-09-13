@@ -33,8 +33,8 @@ enum EXEC_FLAG_VALUES {
 struct Matrix {
     char* sourceFile;
     MatrixType dataType;
-    int width;
-    int column;
+    int numRows;
+    int numCols;
     double** matrix;
 };
 typedef struct Matrix Matrix;
@@ -44,6 +44,7 @@ extern struct option EXEC_OPTIONS[];
 extern const char*  AUTHOR_SN;
 extern const int FLAG_ARG_BUFSIZ;
 extern const int FILEPATH_MAX;
+extern const int DIM_BUFSIZ;
 extern const int DEFAULT_THREAD_COUNT;
 
 /*  Utility function definitions  */

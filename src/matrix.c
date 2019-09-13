@@ -100,17 +100,23 @@ int main(int argc, char **argv) {
         matrixCount = 1;
     }
 
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
     FILE** readFiles = calloc(matrixCount, sizeof(FILE));
     openFiles(readFiles, fileNames, matrixCount);
-
     Matrix matrices[matrixCount];
     for (int i = 0; i < matrixCount; i++) {
         parseMatrixFile(readFiles[i], &matrices[i], fileNames[i]);
     }
-
-
     closeFiles(readFiles, matrixCount);
-    printf("Log?: %s\n", (log) ? "true" : "false");
+    gettimeofday(&end, NULL);
+
+    double delta;
+    delta = ((end.tv_sec  - start.tv_sec) * 1000000u +
+           end.tv_usec - start.tv_usec) / 1.e6;
+    
+    printf("Executed in %10.6fs\n", delta);
+    printf("Log? %d\n", log);
     printf("Operation: %d\n", efv);          //  Simple checker for testing
     return 0;
 }

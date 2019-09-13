@@ -49,9 +49,33 @@ void parseMatrixFile(FILE* matrixFile, Matrix* destMatrix, char* fileName) {
         return;
     }
     allocateDataType(strMatType, destMatrix);
-    if (destMatrix->dataType = ERR) {
+    free(strMatType);                               //  Free strMatType as it is no longer needed
+    if (destMatrix->dataType == ERR) {
         return;
     }
+
+    char* strNumRows = (char*) malloc(DIM_BUFSIZ);
+    char* strNumCols = (char*) malloc(DIM_BUFSIZ);
+
+    if (strNumRows == NULL || strNumCols == NULL) {
+        return;
+    }
+
+    err = fscanf(matrixFile, "%s %s", strNumRows, strNumCols);    
+    if (err != 2) {
+        free(strNumRows);
+        free(strNumCols);
+        return;
+    }
+
+    int numRows = strToInt(strNumRows);
+    int numCols = strToInt(strNumCols);
+    if (numRows < 0 || numCols < 0) {
+        return;
+    }
+
+    destMatrix->numRows = numRows;
+    destMatrix->numCols = numCols;
 }
 
 /*  Allocate a matrixType to the destination matrix  */
@@ -60,7 +84,7 @@ void allocateDataType(char* matType, Matrix* destMatrix) {
         destMatrix->dataType = INT;
         return;
     }
-    else if (strcmp(matType, "float") == ) {
+    else if (strcmp(matType, "float") == 0) {
         destMatrix->dataType = FLOAT;
         return;
     }

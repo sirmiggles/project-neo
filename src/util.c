@@ -34,10 +34,10 @@ bool sufficientArgs(int numProvided, int numRequired) {
     return (numProvided != numRequired) ? false : true;
 }
 
-/*  Sets number of threads to be used in program execution (not omp)  */
-int strToInt(char* newNumThreads) {
+/*  Convert char* to a positive int  */
+int strToInt(char* str) {
     int val;
-    if ((val = atoi(newNumThreads)) != 0) {
+    if ((val = atoi(str)) != 0) {
         return (val > 0) ? val : 0;
     }
     return -1;
