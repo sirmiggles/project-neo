@@ -42,17 +42,3 @@ int strToInt(char* newNumThreads) {
     }
     return -1;
 }
-
-/*  
-    DEPRECATED
-    Converts the scalar parameter for -sm  
-*/
-/*
-float strToFloat(char* scalarFactor) {
-    float val;
-    if ((val = atof(scalarFactor)) != 0) {
-        return val;
-    }
-    return 0.0;
-}
-*/

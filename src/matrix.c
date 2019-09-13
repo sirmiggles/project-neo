@@ -24,7 +24,6 @@ int main(int argc, char **argv) {
     }
 
     enum EXEC_FLAG_VALUES efv = UD;         //  Execution flag value, based on enum
-    bool operationFound = false;            //  Checker for if an exec. flag has been found
     bool log = false;                       //  Will the execution output a log file
 
     int matrixCount = 0;                    //  Current number of matrices
@@ -35,7 +34,7 @@ int main(int argc, char **argv) {
 
     char* thOpt     = calloc(FLAG_ARG_BUFSIZ, sizeof(char));    //  -t argument buffer
     char* flagArg   = calloc(FLAG_ARG_BUFSIZ, sizeof(char));    //  -sm argument buffer
-    float scalar = 0.0;
+    float scalar;
     
     char* fileNames[2];
     fileNames[0] = calloc(FILEPATH_MAX, sizeof(char));
@@ -71,21 +70,12 @@ int main(int argc, char **argv) {
             if (efv == SM) {
                 strcpy(flagArg, optarg);
                 scalar = atof(flagArg);
-                /*
-                //  Deprecated
-                //  If scalar cannot be converted, it returns 0.0
-                if ((scalar = strToFloat(flagArg)) == 0.0 ) {
-                    fprintf(stderr, "Scalar factor must not be 0.0\n");
-                    return -1;
-                }
-                */
-                operationFound = true;
+                printf("Scalar is %10.6f\n", scalar);
                 continue;
             }
             if (efv == AD || efv == MM) {
                 requiredMatrices = 2;
             }
-            operationFound = true;
         }
     }
     //  Free the buffer files for reading command line arguments
@@ -93,8 +83,8 @@ int main(int argc, char **argv) {
     free(flagArg);
 
     //  If no operations are found, exit
-    if (!operationFound) {
-        fprintf(stderr, "No matrix operations specified\n");
+    if (efv == UD) {
+        fprintf(stderr, "No operations found\n");
         return -1;
     }
 
@@ -124,8 +114,8 @@ int main(int argc, char **argv) {
         printf("\n");
     }
 
-    closeFiles(readFiles, matrixCount);
 
+    closeFiles(readFiles, matrixCount);
     printf("Log?: %s\n", (log) ? "true" : "false");
     printf("Operation: %d\n", efv);          //  Simple checker for testing
     return 0;
