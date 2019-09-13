@@ -41,6 +41,31 @@ void closeFiles(FILE** files, int numFiles) {
 }
 
 /*  Converts the said file into a matrix format  */
-void parseMatrixFile(FILE* matrixFile, Matrix* destinationMatrix, char* fileName) {
-    return;
+void parseMatrixFile(FILE* matrixFile, Matrix* destMatrix, char* fileName) {
+    int err;
+    char* strMatType = (char *) calloc(5, sizeof(char));
+    err = fscanf(matrixFile,"%s", strMatType);
+    if (err != 1) {
+        return;
+    }
+    allocateDataType(strMatType, destMatrix);
+    if (destMatrix->dataType = ERR) {
+        return;
+    }
+}
+
+/*  Allocate a matrixType to the destination matrix  */
+void allocateDataType(char* matType, Matrix* destMatrix) {
+    if (strcmp(matType, "int") == 0) {
+        destMatrix->dataType = INT;
+        return;
+    }
+    else if (strcmp(matType, "float") == ) {
+        destMatrix->dataType = FLOAT;
+        return;
+    }
+    else {
+        destMatrix->dataType = ERR;
+        return;
+    }
 }

@@ -50,10 +50,12 @@ extern const int DEFAULT_THREAD_COUNT;
 extern void     usage(void);
 extern bool     sufficientArgs(int, int);
 extern int      strToInt(char*);
-extern void     parseFile(FILE*, Matrix*, char*);
+
 
 /*  File I/O function definitiions */
-extern void parseFileName(int*, char*, char*);
-extern bool fileAccessible(char*);
-extern void openFiles(FILE**, char**, int);
-extern void closeFiles(FILE**, int);
+extern void     parseFileName(int*, char*, char*);
+extern bool     fileAccessible(char*);
+extern void     openFiles(FILE**, char**, int);
+extern void     closeFiles(FILE**, int);
+extern void     parseMatrixFile(FILE*, Matrix*, char*);
+extern void     allocateDataType(char*, Matrix*);

@@ -103,15 +103,9 @@ int main(int argc, char **argv) {
     FILE** readFiles = calloc(matrixCount, sizeof(FILE));
     openFiles(readFiles, fileNames, matrixCount);
 
+    Matrix matrices[matrixCount];
     for (int i = 0; i < matrixCount; i++) {
-        printf("File %d:\n", i);
-        char c;
-        while ((c = fgetc(readFiles[i])) != '\0') {
-            if (feof(readFiles[i]))
-                break;
-            printf("%c", c);
-        }
-        printf("\n");
+        parseMatrixFile(readFiles[i], &matrices[i], fileNames[i]);
     }
 
 
