@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
 
                 case TH:
                     strcpy(thOpt, optarg);
-                    if ((numThreads = setNumberOfThreads(thOpt)) < 1) {
+                    if ((numThreads = strToInt(thOpt)) < 1) {
                         fprintf(stderr, "Number of threads should be greater than 0 and an integer\n");
                         return -1;
                     }
@@ -70,10 +70,15 @@ int main(int argc, char **argv) {
             efv = opt;
             if (efv == SM) {
                 strcpy(flagArg, optarg);
-                if ((scalar = getScalarFactor(flagArg)) == 0.0 ) {
+                scalar = atof(flagArg);
+                /*
+                //  Deprecated
+                //  If scalar cannot be converted, it returns 0.0
+                if ((scalar = strToFloat(flagArg)) == 0.0 ) {
                     fprintf(stderr, "Scalar factor must not be 0.0\n");
                     return -1;
                 }
+                */
                 operationFound = true;
                 continue;
             }

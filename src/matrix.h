@@ -49,8 +49,8 @@ extern const int DEFAULT_THREAD_COUNT;
 /*  Utility function definitions  */
 extern void     usage(void);
 extern bool     sufficientArgs(int, int);
-extern int      setNumberOfThreads(char*);
-extern float    getScalarFactor(char*);
+extern int      strToInt(char*);
+extern float    strToFloat(char*);
 
 /*  File I/O function definitiions */
 extern void parseFileName(int*, char*, char*);

@@ -35,7 +35,7 @@ bool sufficientArgs(int numProvided, int numRequired) {
 }
 
 /*  Sets number of threads to be used in program execution (not omp)  */
-int setNumberOfThreads(char* newNumThreads) {
+int strToInt(char* newNumThreads) {
     int val;
     if ((val = atoi(newNumThreads)) != 0) {
         return (val > 0) ? val : 0;
@@ -43,11 +43,16 @@ int setNumberOfThreads(char* newNumThreads) {
     return -1;
 }
 
-/*  Converts the scalar parameter for -sm  */
-float getScalarFactor(char* scalarFactor) {
+/*  
+    DEPRECATED
+    Converts the scalar parameter for -sm  
+*/
+/*
+float strToFloat(char* scalarFactor) {
     float val;
     if ((val = atof(scalarFactor)) != 0) {
         return val;
     }
     return 0.0;
 }
+*/
