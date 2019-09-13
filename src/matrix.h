@@ -50,6 +50,7 @@ extern const int DEFAULT_THREAD_COUNT;
 extern void     usage(void);
 extern bool     sufficientArgs(int, int);
 extern int      strToInt(char*);
+extern void     parseFile(FILE*, Matrix*, char*);
 
 /*  File I/O function definitiions */
 extern void parseFileName(int*, char*, char*);

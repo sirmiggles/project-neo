@@ -39,3 +39,8 @@ void closeFiles(FILE** files, int numFiles) {
         fclose(files[i]);
     }
 }
+
+/*  Converts the said file into a matrix format  */
+void parseMatrixFile(FILE* matrixFile, Matrix* destinationMatrix, char* fileName) {
+    return;
+}
