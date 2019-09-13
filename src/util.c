@@ -2,7 +2,7 @@
     File Name:      util.c 
     Description:    Contains Utility functions for the matrix program
     Author:         MIGUEL ARIES SAMBAT TABADERO (22240204)
-    Last Modified:  09/9/2019
+    Last Modified:  13/9/2019
 */
 
 #include <stdio.h>
