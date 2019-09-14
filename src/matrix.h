@@ -30,10 +30,11 @@ enum EXEC_FLAG_VALUES {
 };
 
 struct CoordForm {
-    int i;
-    int j;
-    float        value;
+    int     i;              //  Row Index
+    int     j;              //  Column Index
+    float   value;
 };
+
 typedef struct CoordForm CoordForm;
 
 struct CSR {
