@@ -38,8 +38,9 @@ struct CoordForm {
 typedef struct CoordForm CoordForm;
 
 struct CSR {
+    int    numNonZero;
     float* values;
-    int*   columnIndex;
+    int*   colIndex;
     int*   rowPtr;
 };
 typedef struct CSR CSR;
@@ -69,6 +70,7 @@ extern  bool    sufficientArgs(int, int);
 extern  int     strToInt(char*);
 extern  float   strToFloat(char*);
 extern  void    printCOO(Matrix);
+extern  void    resizeCSR(CSR*, long);
 
 /*  File I/O function definitiions */
 extern  void    parseFileName(int*, char*, char*);
@@ -84,3 +86,4 @@ extern  void    convertToCOO(Matrix*, char*, int, int, int);
 extern  float   trace(Matrix);
 extern  void    scalarMultiply(Matrix*, float);
 extern  void    transpose(Matrix*);
+extern  CSR*    convertToCSR(Matrix*);     

@@ -64,3 +64,17 @@ void printCOO(Matrix matrix) {
     }
     printf("]\n");
 }
+
+/*  Expand the CSR pointer  */
+void resizeCSR(CSR* csr, long newSpace) {
+    float* valuesBuffer = (float*) realloc(csr->values, newSpace);
+    if (valuesBuffer == NULL) {
+        csr->values = NULL;
+    }
+    csr->values = valuesBuffer;
+    
+    float* colsBuffer = (float*) realloc(csr->colIndex, newSpace);
+    if (colsBuffer == NULL) {
+        csr->colIndex = NULL;
+    }
+}

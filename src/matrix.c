@@ -119,7 +119,11 @@ int main(int argc, char **argv) {
            end.tv_usec - start.tv_usec) / 1.e6;
 
     printf("Files Processed in %10.6fs\n", delta_files);
-    float tr; 
+
+    CSR* csrs = convertToCSR(&matrices[0]);
+    printf("csrs NNZ = %d\n", csrs->numNonZero);
+    free(csrs);
+    /* float tr; 
     switch (efv) {
         case SM :
             scalarMultiply(&matrices[0], scalar);
@@ -140,9 +144,7 @@ int main(int argc, char **argv) {
             break;
         default :
             break;
-    }
-
-    
+    } */
     printf("Log? %d\n", log);
     printf("Operation: %d\n", efv);          //  Simple checker for testing
     return 0;

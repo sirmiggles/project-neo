@@ -6,6 +6,7 @@
 */
 
 #include <stdio.h>
+#include <stdbool.h>
 #include <float.h>
 #include <omp.h>
 
@@ -46,4 +47,49 @@ void transpose(Matrix* matrix) {
         swapNumbers(&matrix->coo[i].i, &matrix->coo[i].j);
         printf("After  : %d  ||  %d\n", matrix->coo[i].i, matrix->coo[i].j);
     }
+}
+
+/*  Convert from COO to CSR  */
+CSR* convertToCSR(Matrix* matrix) {
+    CSR* output = malloc(sizeof(CSR));
+    long numElements = matrix->numCols * matrix->numRows;
+
+    //  Malloc the pointers inside the CSR format
+    output->values      = (float*)  malloc(numElements * sizeof(float));
+    if (output->values == NULL) {
+        return NULL;
+    }
+    output->colIndex    = (int*)    malloc(numElements * sizeof(int));
+    if (output->colIndex == NULL) {
+        return NULL;
+    }
+
+    output->rowPtr      = (int*)    malloc(matrix->numRows * sizeof(int));
+    if (output->rowPtr == NULL) {
+        return NULL;
+    }
+
+    output->numNonZero = 0;
+    int colIndex = 0;
+    int rowPtrIndex = 0;
+    int valIndex = 0;
+    for (unsigned long i = 0; i < numElements; i++) {
+        CoordForm c = matrix->coo[i];
+        if (c.value == 0) {
+            continue;
+        }
+        colIndex = i % matrix->numCols;
+        output->numNonZero++;
+        output->values[valIndex]    = c.value;
+        output->colIndex[valIndex]  = colIndex;
+        //  New row
+        if (colIndex == 0) {
+            output->rowPtr[rowPtrIndex++] = valIndex;
+        }
+        valIndex++;
+    }
+    if (valIndex + 1 < numElements) {
+        resizeCSR(output, valIndex + 1);
+    }
+    return output;
 }

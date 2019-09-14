@@ -88,7 +88,7 @@ void parseMatrixFile(FILE* matrixFile, Matrix* targetMatrix, char* fileName) {
             return;
         }
         j = k % targetMatrix->numCols;
-        i = (k > 0 && j == 0) ? (i + 1) % targetMatrix->numCols : i;
+        i = (k > 0 && j == 0) ? (i + 1) % targetMatrix->numRows : i;
         convertToCOO(targetMatrix, strElement, i, j, k);
     }
 }
