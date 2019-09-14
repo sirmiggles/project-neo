@@ -112,6 +112,7 @@ int main(int argc, char **argv) {
         parseMatrixFile(readFiles[i], &matrices[i], fileNames[i]);
     }
     closeFiles(readFiles, matrixCount);
+    free(readFiles);
     gettimeofday(&end, NULL);
 
     double delta_files;
@@ -132,6 +133,7 @@ int main(int argc, char **argv) {
         case TR :
             tr = trace(matrices[0]);
             printf("%10.6f\n", tr);
+            if (log == true) {}
             break;
 
         case TS :
@@ -139,15 +141,19 @@ int main(int argc, char **argv) {
             transpose(&matrices[0]);
             qsort(matrices[0].coo, matrices->numRows * matrices-> numCols, \
                   sizeof(CoordForm), rowComparator);
+            if (log == true) {}
             printCOO(matrices[0]);
             break;
+
         case AD :
             break;
+
         case MM :
             break;
         default :
             break;
     }
+
     printf("Log? %d\n", log);
     printf("Operation: %d\n", efv);          //  Simple checker for testing
     return 0;
