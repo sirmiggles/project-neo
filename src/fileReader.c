@@ -79,10 +79,15 @@ void parseMatrixFile(FILE* matrixFile, Matrix* targetMatrix, char* fileName) {
 
     long int numElements = targetMatrix->numCols * targetMatrix->numRows;
     targetMatrix->coo = malloc(sizeof(CoordForm) * numElements);
+    if (targetMatrix->coo == NULL) {
+        targetMatrix->type = ERR;
+        return;
+    }
+
     int i = 0, j = 0;
     char* strElement = (char *) malloc(sizeof(char) * ELEMENT_SIZE);
     for (int k = 0; k < numElements; k++) {
-        int errno = fscanf(matrixFile, "%s ", strElement);
+        int errno = fscanf(matrixFile, "%s", strElement);
         if (errno != 1) {
             targetMatrix->type = ERR;
             return;
