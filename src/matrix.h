@@ -81,3 +81,5 @@ extern  void    convertToCOO(Matrix*, char*, int, int, int);
 
 /*  Matrix operation functions definitions  */
 extern  float   trace(Matrix, int);
+extern  void    scalarMultiply(Matrix*, float);
+extern  void    transpose(Matrix*);

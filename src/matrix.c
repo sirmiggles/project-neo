@@ -119,11 +119,15 @@ int main(int argc, char **argv) {
            end.tv_usec - start.tv_usec) / 1.e6;
 
     printf("Files Processed in %10.6fs\n", delta_files);
-    
-    printCOO(matrices[0]);
+    // printCOO(matrices[0]);
     for (int i = 0; i < matrixCount; i++) {
-        printf("Trace for Matrix %d : %10.6f", i, trace(matrices[i], numThreads));
+        printf("Trace for Matrix %d : %10.6f\n", i, trace(matrices[i], numThreads));
     }
+    // scalarMultiply(&matrices[0], scalar);
+    printCOO(matrices[0]);
+    transpose(&matrices[0]);
+    printf("\n");
+    printCOO(matrices[0]);
 
     printf("Log? %d\n", log);
     printf("Operation: %d\n", efv);          //  Simple checker for testing
