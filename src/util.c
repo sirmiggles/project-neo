@@ -38,7 +38,7 @@ bool sufficientArgs(int numProvided, int numRequired) {
 }
 
 /*  Convert char* to a positive int  */
-unsigned int strToInt(char* str) {
+int strToInt(char* str) {
     unsigned int val = UINT_MAX;
     char* buff;
     val = strtoul(str, &buff, 0);

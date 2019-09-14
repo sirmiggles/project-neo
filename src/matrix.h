@@ -30,16 +30,16 @@ enum EXEC_FLAG_VALUES {
 };
 
 struct CoordForm {
-    unsigned int i;
-    unsigned int j;
+    int i;
+    int j;
     float        value;
 };
 typedef struct CoordForm CoordForm;
 
 struct CSR {
-    float*          values;
-    unsigned int*   columnIndex;
-    unsigned int*   rowPtr;
+    float* values;
+    int*   columnIndex;
+    int*   rowPtr;
 };
 typedef struct CSR CSR;
 
@@ -47,8 +47,8 @@ typedef struct CSR CSR;
 struct Matrix {
     char*               sourceFile;
     MatrixType          type;
-    unsigned int   numRows;
-    unsigned int   numCols;
+    int   numRows;
+    int   numCols;
     CoordForm*          coo;
 };
 typedef struct Matrix Matrix;
@@ -65,7 +65,7 @@ extern  const int        DEFAULT_THREAD_COUNT;
 /*  Utility function definitions  */
 extern  void            usage(void);
 extern  bool            sufficientArgs(int, int);
-extern  unsigned int    strToInt(char*);
+extern  int             strToInt(char*);
 extern  float           strToFloat(char*);
 extern  void            printCOO(Matrix);
 
