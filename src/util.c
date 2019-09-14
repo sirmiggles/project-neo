@@ -2,7 +2,7 @@
     File Name:      util.c 
     Description:    Contains Utility functions for the matrix program
     Author:         MIGUEL ARIES SAMBAT TABADERO (22240204)
-    Last Modified:  13/9/2019
+    Last Modified:  14/9/2019
 */
 
 #include <stdio.h>
@@ -41,4 +41,16 @@ int strToInt(char* str) {
         return (val > 0) ? val : 0;
     }
     return -1;
+}
+
+/*  Prints out the matrix in COO form  */
+void printCOO(Matrix matrix) {
+    long unsigned int numElements = matrix.numCols * matrix.numRows;
+    printf("[");
+    for (int i = 0; i < numElements; i++) {
+        printf("(%ld, %ld, %10.6f) \n", matrix.coo[i].i, matrix.coo[i].j, matrix.coo[i].value);
+        if (i + 1 < numElements)
+            printf(" "); 
+    }
+    printf("]\n");
 }
