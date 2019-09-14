@@ -30,45 +30,53 @@ enum EXEC_FLAG_VALUES {
 };
 
 struct CoordForm {
-    unsigned long   i;
-    unsigned long   j;
-    float           value;
+    unsigned int i;
+    unsigned int j;
+    float        value;
 };
 typedef struct CoordForm CoordForm;
 
+struct CSR {
+    float*          values;
+    unsigned int*   columnIndex;
+    unsigned int*   rowPtr;
+};
+typedef struct CSR CSR;
+
 /*  Struct holding the key matrix information */
 struct Matrix {
-    char*           sourceFile;
-    MatrixType      type;
-    unsigned int    numRows;
-    unsigned int    numCols;
-    CoordForm*      coo;
+    char*               sourceFile;
+    MatrixType          type;
+    unsigned int   numRows;
+    unsigned int   numCols;
+    CoordForm*          coo;
 };
 typedef struct Matrix Matrix;
 
 /*  The constants defined in globals.c  */
-extern struct option EXEC_OPTIONS[];
-extern const char*  AUTHOR_SN;
-extern const int FLAG_ARG_BUFSIZ;
-extern const int FILEPATH_MAX;
-extern const int DIM_BUFSIZ;
-extern const int ELEMENT_SIZE;
-extern const int DEFAULT_THREAD_COUNT;
+extern  struct option    EXEC_OPTIONS[];
+extern  const char*      AUTHOR_SN;
+extern  const int        FLAG_ARG_BUFSIZ;
+extern  const int        FILEPATH_MAX;
+extern  const int        DIM_BUFSIZ;
+extern  const int        ELEMENT_SIZE;
+extern  const int        DEFAULT_THREAD_COUNT;
 
 /*  Utility function definitions  */
-extern void     usage(void);
-extern bool     sufficientArgs(int, int);
-extern int      strToInt(char*);
-extern void     printCOO(Matrix);
+extern  void            usage(void);
+extern  bool            sufficientArgs(int, int);
+extern  unsigned int    strToInt(char*);
+extern  float           strToFloat(char*);
+extern  void            printCOO(Matrix);
 
 /*  File I/O function definitiions */
-extern void     parseFileName(int*, char*, char*);
-extern bool     fileAccessible(char*);
-extern void     openFiles(FILE**, char**, int);
-extern void     closeFiles(FILE**, int);
-extern void     parseMatrixFile(FILE*, Matrix*, char*);
-extern void     allocateDataType(Matrix*, char*);
-extern void     allocateDimensions(Matrix*, char*, char*);
+extern  void     parseFileName(int*, char*, char*);
+extern  bool     fileAccessible(char*);
+extern  void     openFiles(FILE**, char**, int);
+extern  void     closeFiles(FILE**, int);
+extern  void     parseMatrixFile(FILE*, Matrix*, char*);
+extern  void     allocateDataType(Matrix*, char*);
+extern  void     allocateDimensions(Matrix*, char*, char*);
 
 /*  Matrix operation functions definitions  */
-extern float    trace(Matrix, int);
+extern  float    trace(Matrix, int);

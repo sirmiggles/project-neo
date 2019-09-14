@@ -6,8 +6,11 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <errno.h>
 #include <string.h>
+#include <limits.h>
+#include <float.h>
 
 #include "matrix.h"
 
@@ -35,20 +38,27 @@ bool sufficientArgs(int numProvided, int numRequired) {
 }
 
 /*  Convert char* to a positive int  */
-int strToInt(char* str) {
-    int val;
-    if ((val = atoi(str)) != 0) {
-        return (val > 0) ? val : 0;
-    }
-    return -1;
+unsigned int strToInt(char* str) {
+    unsigned int val = UINT_MAX;
+    char* buff;
+    val = strtoul(str, &buff, 0);
+    return val;
+}
+
+/*  Convert char* to a float  */
+float strToFloat(char* str) {
+    float val = FLT_MAX;
+    char* buff;
+    val = strtof(str, &buff);
+    return val;
 }
 
 /*  Prints out the matrix in COO form  */
 void printCOO(Matrix matrix) {
-    long unsigned int numElements = matrix.numCols * matrix.numRows;
+    unsigned long numElements = matrix.numCols * matrix.numRows;
     printf("[");
     for (int i = 0; i < numElements; i++) {
-        printf("(%ld, %ld, %10.6f) \n", matrix.coo[i].i, matrix.coo[i].j, matrix.coo[i].value);
+        printf("(%d, %d, %10.6f) \n", matrix.coo[i].i, matrix.coo[i].j, matrix.coo[i].value);
         if (i + 1 < numElements)
             printf(" "); 
     }

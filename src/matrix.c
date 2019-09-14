@@ -13,6 +13,9 @@
 #include <string.h>
 #include <sys/time.h>
 
+#include <limits.h>
+#include <float.h>
+
 #include "matrix.h"
 
 int main(int argc, char **argv) {
@@ -32,13 +35,13 @@ int main(int argc, char **argv) {
     int numThreads;                         //  The default number of threads that the program will run in
     numThreads = DEFAULT_THREAD_COUNT;
 
-    char* thOpt     = calloc(FLAG_ARG_BUFSIZ, sizeof(char));    //  -t argument buffer
-    char* flagArg   = calloc(FLAG_ARG_BUFSIZ, sizeof(char));    //  -sm argument buffer
+    char* thOpt     = malloc(FLAG_ARG_BUFSIZ * sizeof(char));    //  -t argument buffer
+    char* flagArg   = malloc(FLAG_ARG_BUFSIZ * sizeof(char));     //  -sm argument buffer
     float scalar;
     
     char* fileNames[2];
-    fileNames[0] = calloc(FILEPATH_MAX, sizeof(char));
-    fileNames[1] = calloc(FILEPATH_MAX, sizeof(char));
+    fileNames[0] = malloc(FILEPATH_MAX * sizeof(char));
+    fileNames[1] = malloc(FILEPATH_MAX * sizeof(char));
     int fnIndex = 0;
 
     int opt, optIndex;
@@ -69,7 +72,7 @@ int main(int argc, char **argv) {
             efv = opt;
             if (efv == SM) {
                 strcpy(flagArg, optarg);
-                scalar = atof(flagArg);
+                scalar = strToFloat(flagArg);
                 printf("Scalar is %10.6f\n", scalar);
                 continue;
             }
