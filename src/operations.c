@@ -12,7 +12,7 @@
 #include "matrix.h"
 
 /*  Calculate the trace of a square matrix  */
-float trace(Matrix matrix, int numThreads) {
+float trace(Matrix matrix) {
     float trace = 0.0;
     int i = 0;
     long int numElements = matrix.numRows * matrix.numCols;
@@ -28,7 +28,6 @@ void scalarMultiply(Matrix* matrix, float scalar) {
     unsigned long numElements = matrix->numCols * matrix->numRows;
     for (unsigned long i = 0; i < numElements; i++) {
         float value = matrix->coo[i].value * scalar;
-        printf("Elem %ld : %10.6f\n", i, value);
         matrix->coo[i].value = value;
     }
 }
