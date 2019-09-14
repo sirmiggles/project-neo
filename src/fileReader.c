@@ -84,17 +84,12 @@ void parseMatrixFile(FILE* matrixFile, Matrix* targetMatrix, char* fileName) {
     for (int k = 0; k < numElements; k++) {
         int errno = fscanf(matrixFile, "%s ", strElement);
         if (errno != 1) {
-            fprintf(stderr, "Error: Could not read value");
+            targetMatrix->type = ERR;
             return;
         }
-        char* temp;
         i = k % targetMatrix->numCols;
-        if (k > 0 && i == 0) {
-            j = (j + 1) % targetMatrix->numCols;
-        }
-        float val = strtod(strElement, &temp);
-        CoordForm c = {i, j, val};
-        targetMatrix->coo[k] = c;
+        j = (k > 0 && i == 0) ? (j + 1) % targetMatrix->numCols : j;
+        convertToCOO(targetMatrix, strElement, i, j, k);
     }
 }
 
@@ -118,7 +113,7 @@ void allocateDimensions(Matrix* targetMatrix, char* strNumRows, char* strNumCols
     int numRows = strToInt(strNumRows);
     int numCols = strToInt(strNumCols);
     //  If any dimensions are invalid -- don't do them anymore
-    if (numRows < 0 || numCols < 0) {
+    if (numRows < 1 || numCols < 1) {
         targetMatrix->type = ERR;
         return;
     }
@@ -126,4 +121,10 @@ void allocateDimensions(Matrix* targetMatrix, char* strNumRows, char* strNumCols
         targetMatrix->numRows = numRows;
         targetMatrix->numCols = numCols;
     }
+}
+
+void convertToCOO(Matrix* targetMatrix, char* strElement, int row, int col, int elemNumber) {
+    float val = strToFloat(strElement);
+    CoordForm c = {row, col, val};
+    targetMatrix->coo[elemNumber] = c;
 }

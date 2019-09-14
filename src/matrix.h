@@ -63,20 +63,21 @@ extern  const int        ELEMENT_SIZE;
 extern  const int        DEFAULT_THREAD_COUNT;
 
 /*  Utility function definitions  */
-extern  void            usage(void);
-extern  bool            sufficientArgs(int, int);
-extern  int             strToInt(char*);
-extern  float           strToFloat(char*);
-extern  void            printCOO(Matrix);
+extern  void    usage(void);
+extern  bool    sufficientArgs(int, int);
+extern  int     strToInt(char*);
+extern  float   strToFloat(char*);
+extern  void    printCOO(Matrix);
 
 /*  File I/O function definitiions */
-extern  void     parseFileName(int*, char*, char*);
-extern  bool     fileAccessible(char*);
-extern  void     openFiles(FILE**, char**, int);
-extern  void     closeFiles(FILE**, int);
-extern  void     parseMatrixFile(FILE*, Matrix*, char*);
-extern  void     allocateDataType(Matrix*, char*);
-extern  void     allocateDimensions(Matrix*, char*, char*);
+extern  void    parseFileName(int*, char*, char*);
+extern  bool    fileAccessible(char*);
+extern  void    openFiles(FILE**, char**, int);
+extern  void    closeFiles(FILE**, int);
+extern  void    parseMatrixFile(FILE*, Matrix*, char*);
+extern  void    allocateDataType(Matrix*, char*);
+extern  void    allocateDimensions(Matrix*, char*, char*);
+extern  void    convertToCOO(Matrix*, char*, int, int, int);
 
 /*  Matrix operation functions definitions  */
-extern  float    trace(Matrix, int);
+extern  float   trace(Matrix, int);
