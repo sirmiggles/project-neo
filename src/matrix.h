@@ -71,6 +71,7 @@ extern  int     strToInt(char*);
 extern  float   strToFloat(char*);
 extern  void    printCOO(Matrix);
 extern  void    resizeCSR(CSR*, long);
+extern  int     rowComparator(const void*, const void*);
 
 /*  File I/O function definitiions */
 extern  void    parseFileName(int*, char*, char*);

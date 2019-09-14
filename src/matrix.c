@@ -119,25 +119,10 @@ int main(int argc, char **argv) {
            end.tv_usec - start.tv_usec) / 1.e6;
 
     printf("\nFiles Processed in %10.6fs\n", delta_files);
-
-    /* for (int i = 0; i < matrices[0].numCols * matrices[0].numRows; i++) {
-        if (matrices[0].coo[i].value > 0.0) {
-            printf("%10.6f    ||  %d\n", matrices[0].coo[i].value, matrices[0].coo[i].j);
-        }
-    } */
-    // printCOO(matrices[0]);
     printf("\n");
-    CSR* csrs = convertToCSR(&matrices[0]);
-    printf("csrs NNZ = %d\n", csrs->numNonZero);
-    
-    for (int i = 0; i < csrs->numNonZero; i++) {
-        printf("%10.6f  || %d\n", csrs->values[i], csrs->colIndex[i]);
-    }
-   
-    printf("\n");
-    free(csrs);
-
-    /* float tr; 
+    printf("Before :\n");
+    printCOO(matrices[0]);
+    float tr; 
     switch (efv) {
         case SM :
             scalarMultiply(&matrices[0], scalar);
@@ -150,7 +135,11 @@ int main(int argc, char **argv) {
             break;
 
         case TS :
+            printf("After :\n");
             transpose(&matrices[0]);
+            qsort(matrices[0].coo, matrices->numRows * matrices-> numCols, \
+                  sizeof(CoordForm), rowComparator);
+            printCOO(matrices[0]);
             break;
         case AD :
             break;
@@ -158,7 +147,7 @@ int main(int argc, char **argv) {
             break;
         default :
             break;
-    } */
+    }
     printf("Log? %d\n", log);
     printf("Operation: %d\n", efv);          //  Simple checker for testing
     return 0;

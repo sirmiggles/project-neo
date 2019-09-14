@@ -80,3 +80,19 @@ void resizeCSR(CSR* csr, long newSpace) {
     memcpy(colsBuffer, csr->colIndex, sizeof(int) * newSpace);
     csr->colIndex = colsBuffer;
 }
+
+/*  For sorting the matrix transpose back to order  */
+int rowComparator(const void *p, const void *r) {
+    int pRow = ((CoordForm*)p)->i;
+    int pCol = ((CoordForm*)p)->j;
+    int rRow = ((CoordForm*)r)->i;
+    int rCol = ((CoordForm*)r)->j;
+    
+    if (pRow == rRow) {
+        return (pCol - rCol);
+    }
+    else {
+        return (pRow - rRow);
+    }
+}
+
