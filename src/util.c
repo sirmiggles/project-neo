@@ -39,17 +39,16 @@ bool sufficientArgs(int numProvided, int numRequired) {
 
 /*  Convert char* to a positive int  */
 int strToInt(char* str) {
-    unsigned int val = UINT_MAX;
+    int val = INT_MAX;
     char* buff;
-    val = strtoul(str, &buff, 0);
+    val = strtol(str, &buff, 0);
     return val;
 }
 
 /*  Convert char* to a float  */
 float strToFloat(char* str) {
-    float val = FLT_MAX;
     char* buff;
-    val = strtof(str, &buff);
+    float val = strtof(str, &buff);
     return val;
 }
 
@@ -65,16 +64,19 @@ void printCOO(Matrix matrix) {
     printf("]\n");
 }
 
-/*  Expand the CSR pointer  */
+/*  Resize the CSR pointer  */
 void resizeCSR(CSR* csr, long newSpace) {
-    float* valuesBuffer = (float*) realloc(csr->values, newSpace);
+    float* valuesBuffer = (float*) malloc(sizeof(float) * newSpace);
     if (valuesBuffer == NULL) {
         csr->values = NULL;
     }
+    memcpy(valuesBuffer, csr->values, sizeof(float) * newSpace);
     csr->values = valuesBuffer;
-    
-    float* colsBuffer = (float*) realloc(csr->colIndex, newSpace);
+
+    int* colsBuffer = (int*) malloc(sizeof(int) * newSpace);
     if (colsBuffer == NULL) {
         csr->colIndex = NULL;
     }
+    memcpy(colsBuffer, csr->colIndex, sizeof(int) * newSpace);
+    csr->colIndex = colsBuffer;
 }
