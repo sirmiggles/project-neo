@@ -2,7 +2,7 @@
     File Name:      matrix.h
     Description:    Main header file for matrix that links all the source files
     Author:         MIGUEL ARIES SAMBAT TABADERO (22240204)
-    Last Modified:  13/9/2019
+    Last Modified:  14/9/2019
 */
 
 #include <stdio.h>
@@ -30,19 +30,19 @@ enum EXEC_FLAG_VALUES {
 };
 
 struct CoordForm {
-    int i;
-    int j;
-    float value;
+    unsigned long   i;
+    unsigned long   j;
+    float           value;
 };
 typedef struct CoordForm CoordForm;
 
 /*  Struct holding the key matrix information */
 struct Matrix {
-    char*       sourceFile;
-    MatrixType  type;
-    int         numRows;
-    int         numCols;
-    CoordForm*  coo;
+    char*           sourceFile;
+    MatrixType      type;
+    unsigned int    numRows;
+    unsigned int    numCols;
+    CoordForm*      coo;
 };
 typedef struct Matrix Matrix;
 
@@ -59,6 +59,7 @@ extern const int DEFAULT_THREAD_COUNT;
 extern void     usage(void);
 extern bool     sufficientArgs(int, int);
 extern int      strToInt(char*);
+extern void     printCOO(Matrix);
 
 /*  File I/O function definitiions */
 extern void     parseFileName(int*, char*, char*);
