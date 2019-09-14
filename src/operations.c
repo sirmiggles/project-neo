@@ -59,37 +59,53 @@ CSR* convertToCSR(Matrix* matrix) {
     if (output->values == NULL) {
         return NULL;
     }
-    output->colIndex    = (int*)    malloc(numElements * sizeof(int));
+    output->colIndex    = (int*)    malloc(numElements * sizeof(int) + 1);
     if (output->colIndex == NULL) {
         return NULL;
     }
 
-    output->rowPtr      = (int*)    malloc(matrix->numRows * sizeof(int));
+    output->rowPtr      = (int*)    malloc(matrix->numRows * sizeof(int) + 1);
     if (output->rowPtr == NULL) {
         return NULL;
     }
 
+    output->rowPtr[0] = 0;
     output->numNonZero = 0;
-    int colIndex = 0;
-    int rowPtrIndex = 0;
     int valIndex = 0;
+    int rowPtrIndex = 1;
+    int rowNNZ = 0;
+
     for (unsigned long i = 0; i < numElements; i++) {
         CoordForm c = matrix->coo[i];
-        if (c.value == 0) {
-            continue;
+        // If it's not zero, add it's value to A, and column to JA
+        if (c.value != 0.0) {
+            output->values[valIndex]    = c.value;
+            output->colIndex[valIndex]  = c.j;
+            valIndex++;
+            rowNNZ++;
         }
-        colIndex = i % matrix->numCols;
-        output->numNonZero++;
-        output->values[valIndex]    = c.value;
-        output->colIndex[valIndex]  = colIndex;
-        //  New row
-        if (colIndex == 0) {
-            output->rowPtr[rowPtrIndex++] = valIndex;
+        
+        //  If new row, reset number of elements in row, update output NNZ
+        if (c.j % matrix->numCols == 0) {
+            output->rowPtr[rowPtrIndex] = output->rowPtr[rowPtrIndex - 1] + rowNNZ;
+            output->numNonZero += rowNNZ;
+            rowNNZ = 0;
+            rowPtrIndex++;
         }
-        valIndex++;
     }
-    if (valIndex + 1 < numElements) {
-        resizeCSR(output, valIndex + 1);
+    
+    //  Resize array to be smaller
+    if (output->numNonZero < numElements) {
+        resizeCSR(output, output->numNonZero + 1);
     }
+   
+    for (int i = 0; i < matrix->numRows; i++) {
+        printf("%d ", output->rowPtr[i]);
+    }
+
+    for (int i = 0; i < matrix->numRows; i++) {
+        printf("%d  || %d\n", i, output->rowPtr[i]);
+    }
+    printf("\n");
     return output;
 }
