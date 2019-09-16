@@ -49,6 +49,29 @@ void transpose(Matrix* matrix) {
     }
 }
 
+/*  Add two given matrices  */
+Matrix add(Matrix matrix1, Matrix matrix2) {
+    Matrix output;
+    output.sourceFile = NULL;
+    output.numRows = matrix1.numRows;
+    output.numCols = matrix1.numCols;
+
+    unsigned int numElements = output.numRows * output.numCols;
+    output.coo = malloc(sizeof(CoordForm)* numElements);
+    if (output.coo == NULL) {
+        output.type = ERR;
+        return output;
+    }
+
+    for (int i = 0; i < numElements; i++) {
+        output.coo[i].i = matrix1.coo[i].i;
+        output.coo[i].j = matrix1.coo[i].j;
+        output.coo[i].value = matrix1.coo[i].value + matrix2.coo[i].value;
+    }
+
+    return output;
+}
+
 /*  Convert from COO to CSR  */
 CSR* convertToCSR(Matrix* matrix) {
     CSR* output = malloc(sizeof(CSR));
@@ -86,7 +109,7 @@ CSR* convertToCSR(Matrix* matrix) {
         }
         
         //  If new row, reset number of elements in row, update output NNZ
-        if (c.j % matrix->numCols == 0) {
+        if (i > 0 && c.j % matrix->numCols == 0) {
             output->rowPtr[rowPtrIndex] = output->rowPtr[rowPtrIndex - 1] + rowNNZ;
             output->numNonZero += rowNNZ;
             rowNNZ = 0;
@@ -99,13 +122,6 @@ CSR* convertToCSR(Matrix* matrix) {
         resizeCSR(output, output->numNonZero + 1);
     }
    
-    for (int i = 0; i < matrix->numRows; i++) {
-        printf("%d ", output->rowPtr[i]);
-    }
-
-    for (int i = 0; i < matrix->numRows; i++) {
-        printf("%d  || %d\n", i, output->rowPtr[i]);
-    }
     printf("\n");
     return output;
 }

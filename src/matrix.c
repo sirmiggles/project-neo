@@ -105,6 +105,7 @@ int main(int argc, char **argv) {
 
     struct timeval start, end;
     gettimeofday(&start, NULL);
+    
     FILE** readFiles = calloc(matrixCount, sizeof(FILE));
     openFiles(readFiles, fileNames, matrixCount);
     Matrix matrices[matrixCount];
@@ -121,8 +122,10 @@ int main(int argc, char **argv) {
 
     printf("\nFiles Processed in %10.6fs\n", delta_files);
     printf("\n");
-    printf("Before :\n");
-    printCOO(matrices[0]);
+    // printCOO(matrices[0]);
+
+    // CSR* csr = convertToCSR(&matrices[0]);
+    free(csr);
     float tr; 
     switch (efv) {
         case SM :
@@ -146,6 +149,16 @@ int main(int argc, char **argv) {
             break;
 
         case AD :
+            if (matrices[0].numCols != matrices[1].numCols) {
+                fprintf(stderr, "Matrix 0 does not have the same number of columns as Matrix 1\n");
+                return -1;
+            }
+            if (matrices[0].numRows != matrices[1].numRows) {
+                fprintf(stderr, "Matrix 0 does not have the same number of rows as Matrix 1\n");
+                return -1;
+            }
+            Matrix out = add(matrices[0], matrices[1]);
+            printCOO(out);
             break;
 
         case MM :
