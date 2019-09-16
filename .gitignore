@@ -1,4 +1,3 @@
 #   .gitignore for CITS3402 (2019) Project I
-sample*
-
-essay*
+sample/
+essay/
