@@ -84,8 +84,9 @@ extern  void    allocateDimensions(Matrix*, char*, char*);
 extern  void    convertToCOO(Matrix*, char*, int, int, int);
 
 /*  Matrix operation functions definitions  */
-extern  float   trace(Matrix);
-extern  void    scalarMultiply(Matrix*, float);
-extern  void    transpose(Matrix*);
-extern  Matrix  add(Matrix, Matrix);
-extern  CSR*    convertToCSR(Matrix*);     
+extern  float       trace(Matrix);
+extern  void        scalarMultiply(Matrix*, float);
+extern  void        transpose(Matrix*);
+extern  Matrix      add(Matrix, Matrix);
+extern  CSR*        convertToCSR(Matrix*);     
+extern  CoordForm*  csrToCOO(CSR, Matrix);

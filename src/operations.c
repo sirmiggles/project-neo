@@ -125,3 +125,40 @@ CSR* convertToCSR(Matrix* matrix) {
     printf("\n");
     return output;
 }
+
+/*  Converts CSR back to COO  */
+CoordForm* csrToCOO(CSR csr, Matrix matrix) {
+    int numCols = matrix.numCols;
+    int numRows = matrix.numRows;
+
+    unsigned int numElements = numCols * numRows;
+
+    CoordForm* output = malloc(sizeof(CoordForm) * numElements);
+    if (output == NULL) {
+        return NULL;
+    }
+
+    int currRow = 0;            //  current row of matrix, i.e. i
+    int currIndex = 0;          //  current index of element in COO
+    int nextNZ = 0;             //  index of next non-zero
+
+    //  Reconstruct the COO from CSR
+    for (int i = 0; i < numRows; i++) {
+        int nextRow = csr.rowPtr[i + 1];
+        for (int j = 0; j < numCols; j++) {
+            CoordForm c;
+            c.i = currRow;
+            c.j = j;
+            c.value = 0.0;
+            if (csr.colIndex[nextNZ] == c.j && nextNZ < nextRow) {
+                c.value = csr.values[nextNZ];
+                nextNZ++;
+            }
+            output[currIndex] = c;
+            currIndex++;                        //  Increment the index for output
+        }
+        currRow++;
+    }
+    output[numElements - 1].value = csr.values[csr.numNonZero];
+    return output;
+}
