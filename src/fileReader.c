@@ -2,7 +2,7 @@
     Name:           fileReader.c
     Description:    Contains the functions for File I/O
     Author:         MIGUEL ARIES SAMBAT TABADERO (22240204)
-    Last Modified:  14/9/2019
+    Last Modified:  18/9/2019
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -107,6 +107,10 @@ void parseMatrixFile(FILE* matrixFile, Matrix* targetMatrix, char* fileName) {
         j = k % targetMatrix->numCols;
         i = (k > 0 && j == 0) ? (i + 1) % targetMatrix->numRows : i;
         convertToCOO(targetMatrix, strElement, i, j);
+    }
+
+    if (targetMatrix->numNonZero < numElements) {
+        resizeCOO(targetMatrix->coo, targetMatrix->numNonZero);
     }
 
 }

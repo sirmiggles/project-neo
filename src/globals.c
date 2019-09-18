@@ -2,7 +2,7 @@
     File Name:      globals.c
     Description:    Source file that contains all the constants for the matrix program
     Author:         MIGUEL ARIES SAMBAT TABADERO (22240204)
-    Last Modified:  14/9/2019
+    Last Modified:  18/9/2019
 */
 
 #include <getopt.h>

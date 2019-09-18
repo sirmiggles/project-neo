@@ -3,7 +3,7 @@
     Description:    Main C File for matrix
                     > Contains the entry point (main) for the program
     Author:         MIGUEL ARIES SAMBAT TABADERO (22240204)
-    Last Modified:  13/9/2019
+    Last Modified:  18/9/2019
 */
 
 #include <stdio.h>

@@ -2,7 +2,7 @@
     File Name:      matrix.h
     Description:    Main header file for matrix that links all the source files
     Author:         MIGUEL ARIES SAMBAT TABADERO (22240204)
-    Last Modified:  14/9/2019
+    Last Modified:  18/9/2019
 */
 
 #include <stdio.h>
@@ -70,7 +70,8 @@ extern  void    usage(void);
 extern  bool    sufficientArgs(int, int);
 extern  int     strToInt(char*);
 extern  float   strToFloat(char*);
-extern  void    resizeCSR(CSR*, long);
+extern  void    resizeCOO(CoordForm*, int);
+extern  void    resizeCSR(CSR*, int);                       //  Remove?
 extern  int     rowComparator(const void*, const void*);
 extern  void    printCOO(Matrix);
 
@@ -89,5 +90,5 @@ extern  float       trace(Matrix);
 extern  void        scalarMultiply(Matrix*, float);
 extern  void        transpose(Matrix*);
 extern  Matrix      add(Matrix, Matrix);
-extern  CSR*        convertToCSR(Matrix*);     
-extern  CoordForm*  csrToCOO(CSR, Matrix);
+extern  CSR*        convertToCSR(Matrix*);                  //  Remove?
+extern  CoordForm*  csrToCOO(CSR, Matrix);                  //  Remove?

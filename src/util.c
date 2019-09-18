@@ -2,7 +2,7 @@
     File Name:      util.c 
     Description:    Contains Utility functions for the matrix program
     Author:         MIGUEL ARIES SAMBAT TABADERO (22240204)
-    Last Modified:  14/9/2019
+    Last Modified:  18/9/2019
 */
 
 #include <stdio.h>
@@ -52,6 +52,19 @@ float strToFloat(char* str) {
     return val;
 }
 
+/*  Resizes the Matrix's COO pointer  */
+void resizeCOO(CoordForm* coo, int newSize) {
+    CoordForm* cooBuffer = malloc(sizeof(CoordForm) * newSize);
+    if (cooBuffer == NULL) {
+        coo = NULL;
+        return;
+    }
+
+    memcpy(cooBuffer, coo, sizeof(CoordForm) * newSize);
+    free(coo);
+    coo = cooBuffer;
+}
+
 /*  Prints out the matrix in COO form  */
 void printCOO(Matrix matrix) {
     printf("[\n");
@@ -62,19 +75,25 @@ void printCOO(Matrix matrix) {
 }
 
 /*  Resize the CSR pointer  */
-void resizeCSR(CSR* csr, long newSpace) {
+void resizeCSR(CSR* csr, int newSpace) {
     float* valuesBuffer = (float*) malloc(sizeof(float) * newSpace);
     if (valuesBuffer == NULL) {
         csr->values = NULL;
     }
+
+    //  Copy to buffer, buffer is now smaller
     memcpy(valuesBuffer, csr->values, sizeof(float) * newSpace);
+    free(csr->values);
     csr->values = valuesBuffer;
 
     int* colsBuffer = (int*) malloc(sizeof(int) * newSpace);
     if (colsBuffer == NULL) {
         csr->colIndex = NULL;
     }
+    
+    //  Copy to buffer, buffer is now smaller
     memcpy(colsBuffer, csr->colIndex, sizeof(int) * newSpace);
+    free(csr->values);
     csr->colIndex = colsBuffer;
 }
 
