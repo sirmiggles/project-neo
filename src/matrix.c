@@ -123,17 +123,22 @@ int main(int argc, char **argv) {
            end.tv_usec - start.tv_usec) / 1.e6;
 
     printf("\nFiles Processed in %10.6fs\n", delta_files);
-    //printCOO(matrices[0]);
-
+    printCOO(matrices[0]);
+    /*
     CSR* csr = convertToCSR(&matrices[0]);
+    if (csr == NULL) {
+        fprintf(stderr, "Failed to convert to CSR\n");
+        return -1;
+    }
 
     for (int i = 0; i < matrices[0].numRows; i++) {
         printf("%d ", csr->rowPtr[i]);
     }
     printf("\n\n");
+    */
 
-    matrices[0].coo = csrToCOO(*csr, matrices[0]);
-    printCOO(matrices[0]);
+    // matrices[0].coo = csrToCOO(*csr, matrices[0]);
+    // printCOO(matrices[0]);
     float tr; 
     switch (efv) {
         case SM :

@@ -47,11 +47,12 @@ typedef struct CSR CSR;
 
 /*  Struct holding the key matrix information */
 struct Matrix {
-    char*               sourceFile;
-    MatrixType          type;
-    int   numRows;
-    int   numCols;
-    CoordForm*          coo;
+    char*       sourceFile;
+    int         numNonZero;
+    MatrixType  type;
+    int         numRows;
+    int         numCols;
+    CoordForm*  coo;
 };
 typedef struct Matrix Matrix;
 
@@ -81,7 +82,7 @@ extern  void    closeFiles(FILE**, int);
 extern  void    parseMatrixFile(FILE*, Matrix*, char*);
 extern  void    allocateDataType(Matrix*, char*);
 extern  void    allocateDimensions(Matrix*, char*, char*);
-extern  void    convertToCOO(Matrix*, char*, int, int, int);
+extern  void    convertToCOO(Matrix*, char*, int, int);
 
 /*  Matrix operation functions definitions  */
 extern  float       trace(Matrix);

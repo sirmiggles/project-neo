@@ -85,6 +85,8 @@ void parseMatrixFile(FILE* matrixFile, Matrix* targetMatrix, char* fileName) {
         return;
     }
 
+    targetMatrix->numNonZero = 0;               //  Allocate the number of non-zero elements
+
     long int numElements = targetMatrix->numCols * targetMatrix->numRows;
     targetMatrix->coo = malloc(sizeof(CoordForm) * numElements);
     if (targetMatrix->coo == NULL) {
@@ -94,6 +96,7 @@ void parseMatrixFile(FILE* matrixFile, Matrix* targetMatrix, char* fileName) {
 
     int i = 0, j = 0;
     char* strElement = (char *) malloc(sizeof(char) * ELEMENT_SIZE);
+    //  Go through each element
     for (int k = 0; k < numElements; k++) {
         int errno = fscanf(matrixFile, "%s", strElement);
         if (errno != 1) {
@@ -103,8 +106,9 @@ void parseMatrixFile(FILE* matrixFile, Matrix* targetMatrix, char* fileName) {
         
         j = k % targetMatrix->numCols;
         i = (k > 0 && j == 0) ? (i + 1) % targetMatrix->numRows : i;
-        convertToCOO(targetMatrix, strElement, i, j, k);
+        convertToCOO(targetMatrix, strElement, i, j);
     }
+
 }
 
 /*  Allocate a matrixType to the destination matrix  */
@@ -137,8 +141,10 @@ void allocateDimensions(Matrix* targetMatrix, char* strNumRows, char* strNumCols
     }
 }
 
-void convertToCOO(Matrix* targetMatrix, char* strElement, int row, int col, int elemNumber) {
+void convertToCOO(Matrix* targetMatrix, char* strElement, int row, int col) {
     float val = strToFloat(strElement);
-    CoordForm c = {row, col, val};
-    targetMatrix->coo[elemNumber] = c;
+    if (val != 0) {
+        CoordForm c = {row, col, val};
+        targetMatrix->coo[targetMatrix->numNonZero++] = c;
+    }
 }

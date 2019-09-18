@@ -54,12 +54,9 @@ float strToFloat(char* str) {
 
 /*  Prints out the matrix in COO form  */
 void printCOO(Matrix matrix) {
-    unsigned long numElements = matrix.numCols * matrix.numRows;
-    printf("[");
-    for (int i = 0; i < numElements; i++) {
+    printf("[\n");
+    for (int i = 0; i < matrix.numNonZero; i++) {
         printf("(%d, %d, %10.6f) \n", matrix.coo[i].i, matrix.coo[i].j, matrix.coo[i].value);
-        if (i + 1 < numElements)
-            printf(" "); 
     }
     printf("]\n");
 }
