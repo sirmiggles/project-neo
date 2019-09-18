@@ -42,6 +42,14 @@ void closeFiles(FILE** files, int numFiles) {
 
 /*  Converts the said file into a matrix format  */
 void parseMatrixFile(FILE* matrixFile, Matrix* targetMatrix, char* fileName) {
+    //  Allocate source file to 
+    targetMatrix->sourceFile = (char*) malloc(sizeof(char) * FILEPATH_MAX);
+    if (targetMatrix->sourceFile == NULL) {
+        targetMatrix->type = ERR;
+        return;
+    }
+    strcpy(targetMatrix->sourceFile, fileName);
+
     int err;
     char* strMatType = (char *) calloc(5, sizeof(char));
     err = fscanf(matrixFile,"%s", strMatType);

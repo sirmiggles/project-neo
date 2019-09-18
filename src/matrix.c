@@ -102,11 +102,12 @@ int main(int argc, char **argv) {
         free(fileNames[1]);
         matrixCount = 1;
     }
-
+    
+    //  Open files for processing and close files after
     struct timeval start, end;
     gettimeofday(&start, NULL);
     
-    FILE** readFiles = calloc(matrixCount, sizeof(FILE));
+    FILE** readFiles = malloc(matrixCount * sizeof(FILE));
     openFiles(readFiles, fileNames, matrixCount);
     Matrix matrices[matrixCount];
     for (int i = 0; i < matrixCount; i++) {
@@ -114,6 +115,7 @@ int main(int argc, char **argv) {
     }
     closeFiles(readFiles, matrixCount);
     free(readFiles);
+
     gettimeofday(&end, NULL);
 
     double delta_files;
