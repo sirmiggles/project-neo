@@ -139,7 +139,6 @@ int main(int argc, char **argv) {
             break;
 
         case TS :
-            printf("After :\n");
             transpose(&matrices[0]);
             qsort(matrices[0].coo, matrices->numRows * matrices-> numCols, \
                   sizeof(CoordForm), rowComparator);
@@ -158,9 +157,11 @@ int main(int argc, char **argv) {
             }
             Matrix out = add(matrices[0], matrices[1]);
             printCOO(out);
+            return out.numRows;
             break;
 
         case MM :
+
             break;
         default :
             break;

@@ -15,6 +15,7 @@
 
 /*  Calculate the trace of a square matrix  */
 /*  Generic case - O(n) | n = numNonZero    */
+/*  In SM terms, O((w x h) / 10)            */
 float trace(Matrix matrix) {
     float trace = 0.0;
     int i = 0;
@@ -27,6 +28,7 @@ float trace(Matrix matrix) {
 
 /*  Scalar Multiply a given matrix  */
 /*  Generic Case - O(n) | n = numNonZero  */
+/*  In SM terms, O((w x h) / 10)            */
 void scalarMultiply(Matrix* matrix, float scalar) {
     unsigned long numElements = matrix->numCols * matrix->numRows;
     for (unsigned long i = 0; i < numElements; i++) {
@@ -44,6 +46,7 @@ void swapNumbers(int* i, int* j) {
 
 /*  Transpose a given matrix  */
 /*  Generic case - O(n)       */
+/*  In SM terms, O((w x h) / 10)            */
 void transpose(Matrix* matrix) {
     unsigned long numElements = matrix->numCols * matrix->numRows;
     for (unsigned long i = 0; i < numElements; i++) {
@@ -54,44 +57,32 @@ void transpose(Matrix* matrix) {
 }
 
 /*  Add two given matrices  */
-/*  Best case  -  O(n), where n = numNonZero, n(m1) == n(m2)  */
-/*  Worst case -  O(n1 + n2), n1 = m1NumNonZero and n2 = m2NumNonZero  */
+/*  Best case       -  O(n) | n = numNonZero, n(m1) == n(m2)  */
+/*  Generic Case    =  O(m(n-m+1))                            */
 Matrix add(Matrix matrix1, Matrix matrix2) {
     //  Initialize output matrix
-    Matrix output;
-    output.sourceFile = NULL;
-    output.type     = matrix1.type;
-    output.numRows  = matrix1.numRows;
-    output.numCols  = matrix1.numCols;
-    output.numNonZero = 0;
-
+    Matrix output = matrix1;
     int maxSize = matrix1.numNonZero + matrix2.numNonZero;
-    output.coo = malloc(sizeof(CoordForm) * maxSize);
-    if (output.coo == NULL) {
+    CoordForm* newCOO = realloc(output.coo, maxSize * sizeof(CoordForm));
+    if (!newCOO) {
         output.type = ERR;
         return output;
     }
+    output.coo = newCOO;
 
-    //  Copy the elements of matrix 1 (technically O(n))
-    memcpy(output.coo, matrix1.coo, sizeof(CoordForm) * matrix1.numNonZero);
-    output.numNonZero = matrix1.numNonZero;
-
-    //  Before matrix 2
-    printf("Before: \n");
-    for (int i = 0; i < output.numNonZero; i++) {
-        printf("%d | %d  : %10.6f\n", output.coo[i].i, output.coo[i].j, output.coo[i].value);
-    }
-    printf("\n");
-
+    //  Initialize buffer for unmatched cells
     CoordForm* noMatch = malloc(sizeof(CoordForm) * matrix2.numNonZero);
     if (noMatch == NULL) {
         output.type = ERR;
         return output;
     }
-    printf("Malloc'd noMatch!\n");
 
     int minIndex = 0;
     int noMatchIndex = 0;
+    //  Linear search for matches
+    //  Generic     = O(m(n - m + 1))
+    //  Best case   = O(m) | m = numNonZeros of Matrix 1
+    //  Worst case  = O(m(n + 1)) | None of the cells match
     for (int i = 0; i < output.numNonZero; i++) {
         for (int j = minIndex; j < matrix2.numNonZero; j++) {
             //  Match found
@@ -102,28 +93,20 @@ Matrix add(Matrix matrix1, Matrix matrix2) {
             }
             //  No longer in the same row as element, so skip it from now on
             if (output.coo[i].i > matrix2.coo[j].i) {
-                noMatch[noMatchIndex] = matrix2.coo[j];
-                noMatchIndex++;
+                noMatch[noMatchIndex++] = matrix2.coo[j];
                 minIndex++;
             }
         }
     }
 
-    //  Cells with no match
-    for (int i = 0; i < noMatchIndex; i++) {
-        printf("%d | %d : %10.6f\n", noMatch[i].i, noMatch[i].j, noMatch[i].value);
+    //  Copy noMatches, if no matches exist
+    if (noMatchIndex > 0) {
+        memcpy(output.coo + output.numNonZero, noMatch, sizeof(CoordForm) * (noMatchIndex + 1));
+        output.numNonZero += noMatchIndex;
     }
-
-    //  Copy noMatches
-    memcpy(output.coo + output.numNonZero, noMatch, sizeof(CoordForm) * (noMatchIndex + 1));
-    output.numNonZero += noMatchIndex;
-    free(noMatch);
-
-    printf("After: \n");
-    for (int i = 0; i < output.numNonZero; i++) {
-        printf("%d | %d  : %10.6f\n", output.coo[i].i, output.coo[i].j, output.coo[i].value);
-    }
-    printf("\n");
+    free(noMatch);                      // no matches no longer used free it
     return output;
 }
+
+
 
