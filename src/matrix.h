@@ -71,7 +71,6 @@ extern  bool    sufficientArgs(int, int);
 extern  int     strToInt(char*);
 extern  float   strToFloat(char*);
 extern  void    resizeCOO(CoordForm*, int);
-extern  void    resizeCSR(CSR*, int);                       //  Remove?
 extern  int     rowComparator(const void*, const void*);
 extern  void    printCOO(Matrix);
 
@@ -90,5 +89,3 @@ extern  float       trace(Matrix);
 extern  void        scalarMultiply(Matrix*, float);
 extern  void        transpose(Matrix*);
 extern  Matrix      add(Matrix, Matrix);
-extern  CSR*        convertToCSR(Matrix*);                  //  Remove?
-extern  CoordForm*  csrToCOO(CSR, Matrix);                  //  Remove?
