@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/time.h>
+#include <omp.h>
 
 #include <limits.h>
 #include <float.h>
@@ -73,7 +74,6 @@ int main(int argc, char **argv) {
             if (efv == SM) {
                 strcpy(flagArg, optarg);
                 scalar = strToFloat(flagArg);
-                printf("Scalar is %10.6f\n", scalar);
                 continue;
             }
             if (efv == AD || efv == MM) {
@@ -102,10 +102,12 @@ int main(int argc, char **argv) {
         free(fileNames[1]);
         matrixCount = 1;
     }
+
+    omp_set_num_threads(numThreads);
     
     //  Open files for processing and close files after
-    struct timeval start, end;
-    gettimeofday(&start, NULL);
+    struct timeval ioStart, ioEnd;
+    gettimeofday(&ioStart, NULL);
     
     FILE** readFiles = malloc(matrixCount * sizeof(FILE));
     openFiles(readFiles, fileNames, matrixCount);
@@ -116,32 +118,35 @@ int main(int argc, char **argv) {
     closeFiles(readFiles, matrixCount);
     free(readFiles);
 
-    gettimeofday(&end, NULL);
+    gettimeofday(&ioEnd, NULL);
 
-    double delta_files;
-    delta_files = ((end.tv_sec  - start.tv_sec) * 1000000u +
-           end.tv_usec - start.tv_usec) / 1.e6;
+    float ioDelta = ((ioEnd.tv_sec  - ioStart.tv_sec) * 1000000u + ioEnd.tv_usec - ioStart.tv_usec) / 1.e6;
+    printf("Time taken for I/O: %10.6f\n", ioDelta);
 
-    printf("\nFiles Processed in %10.6fs\n", delta_files);
-    // printCOO(matrices[0]);
-
+    struct timeval opStart, opEnd;
     float tr; 
     switch (efv) {
         case SM :
+            gettimeofday(&opStart, NULL);
             scalarMultiply(&matrices[0], scalar);
+            gettimeofday(&opEnd, NULL);
             if (log == true) {} // use log file
             break;
 
         case TR :
+            gettimeofday(&opStart, NULL);
             tr = trace(matrices[0]);
+            gettimeofday(&opEnd, NULL);
             printf("%10.6f\n", tr);
             if (log == true) {}
             break;
 
         case TS :
+            gettimeofday(&opStart, NULL);
             transpose(&matrices[0]);
             qsort(matrices[0].coo, matrices->numRows * matrices-> numCols, \
                   sizeof(CoordForm), rowComparator);
+            gettimeofday(&opEnd, NULL);
             if (log == true) {}
             printCOO(matrices[0]);
             break;
@@ -155,19 +160,22 @@ int main(int argc, char **argv) {
                 fprintf(stderr, "Matrix 0 does not have the same number of rows as Matrix 1\n");
                 return -1;
             }
+            gettimeofday(&opStart, NULL);
             Matrix out = add(matrices[0], matrices[1]);
-            printCOO(out);
-            return out.numRows;
+            matrices[0] = out;
+            gettimeofday(&opEnd, NULL);
+            //printCOO(out);
             break;
 
         case MM :
-
             break;
         default :
+            fprintf(stderr, "No operation found!\n");
+            return -1;
             break;
     }
 
-    printf("Log? %d\n", log);
-    printf("Operation: %d\n", efv);          //  Simple checker for testing
+    float opDelta = ((opEnd.tv_sec  - opStart.tv_sec) * 1000000u + opEnd.tv_usec - opStart.tv_usec) / 1.e6;
+    printf("Time for operation: %10.6f\n", opDelta);
     return 0;
 }
