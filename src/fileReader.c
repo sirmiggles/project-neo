@@ -12,11 +12,14 @@
 #include "matrix.h"
 
 /*  Parses the file name to check if it's valid  */
-void parseFileName(int *matrixCount, char* passedArgument, char* progFileName) {
-    bool fileIsAccessible = fileAccessible(passedArgument);
+void parseFileName(int *matrixCount, char* fileArg, char* matFileName) {
+    bool fileIsAccessible = fileAccessible(fileArg);
     if (fileIsAccessible) {
-        strcpy(progFileName, passedArgument);
+        strcpy(matFileName, fileArg);
         (*matrixCount)++;
+    }
+    else {
+        fprintf(stderr, "%s cannot be found or accessed!\n", fileArg);
     }
 }
 
