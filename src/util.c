@@ -74,8 +74,8 @@ void printCOO(Matrix matrix) {
     printf("]\n");
 }
 
-/*  For sorting the matrix transpose back to order  */
-int rowComparator(const void *p, const void *r) {
+/*  For sorting back to order  */
+int cooComparator(const void *p, const void *r) {
     int pRow = ((CoordForm*)p)->i;
     int pCol = ((CoordForm*)p)->j;
     int rRow = ((CoordForm*)r)->i;

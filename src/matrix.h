@@ -71,7 +71,7 @@ extern  bool    sufficientArgs(int, int);
 extern  int     strToInt(char*);
 extern  float   strToFloat(char*);
 extern  void    resizeCOO(CoordForm*, int);
-extern  int     rowComparator(const void*, const void*);
+extern  int     cooComparator(const void*, const void*);
 extern  void    printCOO(Matrix);
 
 /*  File I/O function definitiions */
@@ -89,3 +89,4 @@ extern  float       trace(Matrix);
 extern  void        scalarMultiply(Matrix*, float);
 extern  void        transpose(Matrix*);
 extern  Matrix      add(Matrix, Matrix);
+extern  Matrix      matrixMultiply(Matrix, Matrix);

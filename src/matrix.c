@@ -142,10 +142,9 @@ int main(int argc, char **argv) {
             break;
 
         case TS :
+            //printCOO(matrices[0]);
             gettimeofday(&opStart, NULL);
             transpose(&matrices[0]);
-            qsort(matrices[0].coo, matrices->numRows * matrices-> numCols, \
-                  sizeof(CoordForm), rowComparator);
             gettimeofday(&opEnd, NULL);
             if (log == true) {}
             printCOO(matrices[0]);
@@ -164,10 +163,17 @@ int main(int argc, char **argv) {
             Matrix out = add(matrices[0], matrices[1]);
             matrices[0] = out;
             gettimeofday(&opEnd, NULL);
-            //printCOO(out);
+            printCOO(out);
             break;
 
         case MM :
+            if (matrices[0].numCols != matrices[1].numRows) {
+                fprintf(stderr, "Matrix 0's number of columns do not match with Matrix 1's number of rows\n");
+                return -1;
+            }
+            
+            Matrix output = matrixMultiply(matrices[0], matrices[1]);
+            printCOO(output);
             break;
         default :
             fprintf(stderr, "No operation found!\n");
