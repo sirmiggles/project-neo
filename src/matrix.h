@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <getopt.h>
+#include <sys/time.h>
+#include <time.h>
 
 enum MatrixType {
     ERR = -1, 
@@ -57,13 +59,14 @@ struct Matrix {
 typedef struct Matrix Matrix;
 
 /*  The constants defined in globals.c  */
-extern  struct option    EXEC_OPTIONS[];
-extern  const char*      AUTHOR_SN;
-extern  const int        FLAG_ARG_BUFSIZ;
-extern  const int        FILEPATH_MAX;
-extern  const int        DIM_BUFSIZ;
-extern  const int        ELEMENT_SIZE;
-extern  const int        DEFAULT_THREAD_COUNT;
+extern  struct  option      EXEC_OPTIONS[];
+extern  const   char*       FLAGS[];
+extern  const   char*       AUTHOR_SN;
+extern  const   int         FLAG_ARG_BUFSIZ;
+extern  const   int         FILEPATH_MAX;
+extern  const   int         DIM_BUFSIZ;
+extern  const   int         ELEMENT_SIZE;
+extern  const   int         DEFAULT_THREAD_COUNT;
 
 /*  Utility function definitions  */
 extern  void        usage(void);
@@ -76,6 +79,11 @@ extern  void        printCOO(Matrix);
 extern  CoordForm** colFilter(Matrix, int*);
 extern  CoordForm** rowFilter(Matrix, int*);
 extern  char**      nzToStr(Matrix);
+extern  FILE*       openLogFile(struct tm *, enum EXEC_FLAG_VALUES);
+extern  void        outputToLogTR(FILE*, Matrix, int, float, float, float);
+extern  void        outputToLogSMTS(FILE*, Matrix, int, float, float, enum EXEC_FLAG_VALUES);
+extern  void        outputToLogADMM(FILE*, Matrix[2], Matrix, int, float, float, enum EXEC_FLAG_VALUES);
+extern  void        printAsMatrix(FILE*, Matrix);
 
 /*  File I/O function definitiions */
 extern  void    parseFileName(int*, char*, char*);

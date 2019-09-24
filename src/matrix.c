@@ -27,6 +27,9 @@ int main(int argc, char **argv) {
         return -1;
     }
 
+    time_t t = time(NULL);
+    struct tm *execStart = localtime(&t);
+
     enum EXEC_FLAG_VALUES efv = UD;         //  Execution flag value, based on enum
     bool log = false;                       //  Will the execution output a log file
 
@@ -44,6 +47,8 @@ int main(int argc, char **argv) {
     fileNames[0] = malloc(FILEPATH_MAX * sizeof(char));
     fileNames[1] = malloc(FILEPATH_MAX * sizeof(char));
     int fnIndex = 0;
+
+    FILE* logFile;
 
     int opt, optIndex;
     //  Loop through execution options
@@ -124,23 +129,31 @@ int main(int argc, char **argv) {
     printf("Time taken for I/O: %10.6f\n", ioDelta);
 
     struct timeval opStart, opEnd;
-    float tr; 
-    char** nzAsStr;
+    float tr, opDelta = 0.0;
     Matrix out;
     switch (efv) {
         case SM :
             gettimeofday(&opStart, NULL);
             scalarMultiply(&matrices[0], scalar);
             gettimeofday(&opEnd, NULL);
-            if (log == true) {} // use log file
+            opDelta = ((opEnd.tv_sec  - opStart.tv_sec) * 1000000u + opEnd.tv_usec - opStart.tv_usec) / 1.e6;
+            if (log == true) {
+                logFile = openLogFile(execStart, efv);
+                outputToLogSMTS(logFile, matrices[0], numThreads, ioDelta, opDelta, efv);
+                fclose(logFile);
+            }
             break;
 
         case TR :
             gettimeofday(&opStart, NULL);
             tr = trace(matrices[0]);
             gettimeofday(&opEnd, NULL);
-            printf("%10.6f\n", tr);
-            if (log == true) {}
+            opDelta = ((opEnd.tv_sec  - opStart.tv_sec) * 1000000u + opEnd.tv_usec - opStart.tv_usec) / 1.e6;
+            if (log == true) {
+                logFile = openLogFile(execStart, efv);
+                outputToLogTR(logFile, matrices[0], numThreads, tr, ioDelta, opDelta);
+                fclose(logFile);
+            }
             break;
 
         case TS :
@@ -148,7 +161,12 @@ int main(int argc, char **argv) {
             gettimeofday(&opStart, NULL);
             transpose(&matrices[0]);
             gettimeofday(&opEnd, NULL);
-            if (log == true) {}
+            opDelta = ((opEnd.tv_sec  - opStart.tv_sec) * 1000000u + opEnd.tv_usec - opStart.tv_usec) / 1.e6;
+            if (log == true) {
+                logFile = openLogFile(execStart, efv);
+                outputToLogSMTS(logFile, matrices[0], numThreads, ioDelta, opDelta, efv);
+                fclose(logFile);
+            }
             printCOO(matrices[0]);
             break;
 
@@ -164,8 +182,11 @@ int main(int argc, char **argv) {
             gettimeofday(&opStart, NULL);
             out = add(matrices[0], matrices[1]);
             gettimeofday(&opEnd, NULL);
+            opDelta = ((opEnd.tv_sec  - opStart.tv_sec) * 1000000u + opEnd.tv_usec - opStart.tv_usec) / 1.e6;
             if (log == true) {
-                nzAsStr = nzToStr(out);
+                logFile = openLogFile(execStart, efv);
+                outputToLogADMM(logFile, matrices, out, numThreads, ioDelta, opDelta, efv);
+                fclose(logFile);
             }
             break;
 
@@ -177,8 +198,11 @@ int main(int argc, char **argv) {
             gettimeofday(&opStart, NULL);
             out = matrixMultiply(matrices[0], matrices[1]);
             gettimeofday(&opEnd, NULL);
+            opDelta = ((opEnd.tv_sec  - opStart.tv_sec) * 1000000u + opEnd.tv_usec - opStart.tv_usec) / 1.e6;
             if (log == true) {
-                nzAsStr = nzToStr(out);
+                logFile = openLogFile(execStart, efv);
+                outputToLogADMM(logFile, matrices, out, numThreads, ioDelta, opDelta, efv);
+                fclose(logFile);
             }
             break;
 
@@ -188,7 +212,7 @@ int main(int argc, char **argv) {
             break;
     }
 
-    float opDelta = ((opEnd.tv_sec  - opStart.tv_sec) * 1000000u + opEnd.tv_usec - opStart.tv_usec) / 1.e6;
+    // float opDelta = ((opEnd.tv_sec  - opStart.tv_sec) * 1000000u + opEnd.tv_usec - opStart.tv_usec) / 1.e6;
     printf("Time for operation: %10.6fs\n", opDelta);
     return 0;
 }

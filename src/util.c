@@ -147,6 +147,7 @@ CoordForm** rowFilter(Matrix mat, int* nzInRow) {
     return output;
 }
 
+/*  Convert NZ elements to strings  */
 char** nzToStr(Matrix mat) {
     int numberSize = 10;            //  Length of INT_MAX is 10 char
     if (mat.type == FLOAT) {
@@ -174,5 +175,7 @@ char** nzToStr(Matrix mat) {
 
     return nzAsStr;
 }
+
+
 
 

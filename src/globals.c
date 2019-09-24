@@ -21,6 +21,8 @@ struct option EXEC_OPTIONS[] = {
     {"t", required_argument, 0, TH}
 };
 
+const char* FLAGS[5] = {"sm", "tr", "ad", "ts", "mm"};
+
 const char* AUTHOR_SN = "22240204";                 //  User signature for when producing .out file
 
 const int FLAG_ARG_BUFSIZ   = 1000;                 //  Buffer size for taking in arguments for -t
