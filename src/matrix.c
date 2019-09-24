@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
 
     char* thOpt     = malloc(FLAG_ARG_BUFSIZ * sizeof(char));    //  -t argument buffer
     char* flagArg   = malloc(FLAG_ARG_BUFSIZ * sizeof(char));     //  -sm argument buffer
-    float scalar;
+    double scalar;
     
     char* fileNames[2];
     fileNames[0] = malloc(FILEPATH_MAX * sizeof(char));
@@ -78,7 +78,7 @@ int main(int argc, char **argv) {
             efv = opt;
             if (efv == SM) {
                 strcpy(flagArg, optarg);
-                scalar = strToFloat(flagArg);
+                scalar = strToDouble(flagArg);
                 continue;
             }
             if (efv == AD || efv == MM) {
@@ -125,11 +125,12 @@ int main(int argc, char **argv) {
 
     gettimeofday(&ioEnd, NULL);
 
-    float ioDelta = ((ioEnd.tv_sec  - ioStart.tv_sec) * 1000000u + ioEnd.tv_usec - ioStart.tv_usec) / 1.e6;
+    double ioDelta = ((ioEnd.tv_sec  - ioStart.tv_sec) * 1000000u + ioEnd.tv_usec - ioStart.tv_usec) / 1.e6;
     printf("Time taken for I/O: %10.6f\n", ioDelta);
 
     struct timeval opStart, opEnd;
-    float tr, opDelta = 0.0;
+    char** nzAsStr;
+    double tr, opDelta = 0.0;
     Matrix out;
     switch (efv) {
         case SM :
@@ -139,7 +140,8 @@ int main(int argc, char **argv) {
             opDelta = ((opEnd.tv_sec  - opStart.tv_sec) * 1000000u + opEnd.tv_usec - opStart.tv_usec) / 1.e6;
             if (log == true) {
                 logFile = openLogFile(execStart, efv);
-                outputToLogSMTS(logFile, matrices[0], numThreads, ioDelta, opDelta, efv);
+                nzAsStr = nzToStr(matrices[0]);
+                outputToLogSMTS(logFile, matrices[0], nzAsStr, numThreads, ioDelta, opDelta, efv);
                 fclose(logFile);
             }
             break;
@@ -157,17 +159,16 @@ int main(int argc, char **argv) {
             break;
 
         case TS :
-            //printCOO(matrices[0]);
             gettimeofday(&opStart, NULL);
             transpose(&matrices[0]);
             gettimeofday(&opEnd, NULL);
             opDelta = ((opEnd.tv_sec  - opStart.tv_sec) * 1000000u + opEnd.tv_usec - opStart.tv_usec) / 1.e6;
             if (log == true) {
                 logFile = openLogFile(execStart, efv);
-                outputToLogSMTS(logFile, matrices[0], numThreads, ioDelta, opDelta, efv);
+                nzAsStr = nzToStr(matrices[0]);
+                outputToLogSMTS(logFile, matrices[0], nzAsStr, numThreads, ioDelta, opDelta, efv);
                 fclose(logFile);
             }
-            printCOO(matrices[0]);
             break;
 
         case AD :
@@ -179,13 +180,19 @@ int main(int argc, char **argv) {
                 fprintf(stderr, "Matrix 0 does not have the same number of rows as Matrix 1\n");
                 return -1;
             }
+
             gettimeofday(&opStart, NULL);
             out = add(matrices[0], matrices[1]);
             gettimeofday(&opEnd, NULL);
+            if (out.type == ERR) {
+                fprintf(stderr, "Error occurred during matrix addition\n");
+                return -1;
+            }
             opDelta = ((opEnd.tv_sec  - opStart.tv_sec) * 1000000u + opEnd.tv_usec - opStart.tv_usec) / 1.e6;
             if (log == true) {
                 logFile = openLogFile(execStart, efv);
-                outputToLogADMM(logFile, matrices, out, numThreads, ioDelta, opDelta, efv);
+                nzAsStr = nzToStr(out);
+                outputToLogADMM(logFile, matrices, out, nzAsStr, numThreads, ioDelta, opDelta, efv);
                 fclose(logFile);
             }
             break;
@@ -198,10 +205,15 @@ int main(int argc, char **argv) {
             gettimeofday(&opStart, NULL);
             out = matrixMultiply(matrices[0], matrices[1]);
             gettimeofday(&opEnd, NULL);
+            if (out.type == ERR) {
+                fprintf(stderr, "Error occurred during matrix multiplication\n");
+                return -1;
+            }
             opDelta = ((opEnd.tv_sec  - opStart.tv_sec) * 1000000u + opEnd.tv_usec - opStart.tv_usec) / 1.e6;
             if (log == true) {
                 logFile = openLogFile(execStart, efv);
-                outputToLogADMM(logFile, matrices, out, numThreads, ioDelta, opDelta, efv);
+                nzAsStr = nzToStr(out);
+                outputToLogADMM(logFile, matrices, out, nzAsStr, numThreads, ioDelta, opDelta, efv);
                 fclose(logFile);
             }
             break;
@@ -211,8 +223,5 @@ int main(int argc, char **argv) {
             return -1;
             break;
     }
-
-    // float opDelta = ((opEnd.tv_sec  - opStart.tv_sec) * 1000000u + opEnd.tv_usec - opStart.tv_usec) / 1.e6;
-    printf("Time for operation: %10.6fs\n", opDelta);
     return 0;
 }

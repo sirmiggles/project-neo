@@ -1,8 +1,8 @@
 /* 
-    File Name:      util.c 
-    Description:    Contains Utility functions for the matrix program
+    File Name:      log.c
+    Description:    Contains logging functions for matrix
     Author:         MIGUEL ARIES SAMBAT TABADERO (22240204)
-    Last Modified:  18/9/2019
+    Last Modified:  25/9/2019
 */
 
 #include "matrix.h"
@@ -26,7 +26,7 @@ FILE* openLogFile(struct tm *time, enum EXEC_FLAG_VALUES efv) {
 }
 
 /*  Output to log for trace  */
-void outputToLogTR(FILE* logFile, Matrix mat, int numThreads, float tr, float delta_io, float delta_op) {
+void outputToLogTR(FILE* logFile, Matrix mat, int numThreads, double tr, double delta_io, double delta_op) {
     fprintf(logFile, "tr\n");
     fprintf(logFile, "%s\n", mat.sourceFile);
     fprintf(logFile, "%d\n", numThreads);
@@ -42,39 +42,33 @@ void outputToLogTR(FILE* logFile, Matrix mat, int numThreads, float tr, float de
 }
 
 /*  Output to log for scalar multiplication and transpose  */
-void outputToLogSMTS(FILE* logFile, Matrix mat, int numThreads, float delta_io, float delta_op, enum EXEC_FLAG_VALUES efv) {
+void outputToLogSMTS(FILE* logFile, Matrix mat, char** nzAsStr, int numThreads, double delta_io, double delta_op, enum EXEC_FLAG_VALUES efv) {
     fprintf(logFile, "%s\n", FLAGS[efv]);
     fprintf(logFile, "%s\n", mat.sourceFile);
     fprintf(logFile, "%d\n", numThreads);
-    printAsMatrix(logFile, mat);
+    printAsMatrix(logFile, mat, nzAsStr);
     fprintf(logFile, "%10.6f\n", delta_io);
     fprintf(logFile, "%10.6f", delta_op);
 }
 
-void outputToLogADMM(FILE* logFile, Matrix mat[2], Matrix out, int numThreads, float delta_io, float delta_op, enum EXEC_FLAG_VALUES efv) {
+void outputToLogADMM(FILE* logFile, Matrix mat[2], Matrix out, char** nzAsStr, int numThreads, double delta_io, double delta_op, enum EXEC_FLAG_VALUES efv) {
     fprintf(logFile, "%s\n", FLAGS[efv]);
     for (int i = 0; i < 2; i++) {
         fprintf(logFile, "%s\n", mat[i].sourceFile);
     }
     fprintf(logFile, "%d\n", numThreads);
-    printAsMatrix(logFile, out);
+    printAsMatrix(logFile, out, nzAsStr);
     fprintf(logFile, "%10.6f\n", delta_io);
     fprintf(logFile, "%10.6f", delta_op);
 }
 
-void printAsMatrix(FILE* logFile, Matrix mat) {
-    int nnzIndex = 0;
+void printAsMatrix(FILE* logFile, Matrix mat, char** nzAsStr) {
+    int nzIndex = 0;
     for (int i = 0; i < mat.numRows; i++) {
         for (int j = 0; j < mat.numCols; j++) {
-            CoordForm c = mat.coo[nnzIndex];
-            if (c.i == i && c.j == j) {
-                nnzIndex += 1;
-                if (mat.type == FLOAT) {
-                    fprintf(logFile, "%10.6f", c.value);
-                }
-                else {
-                    fprintf(logFile, "%d", (int) c.value);
-                }
+            if (mat.coo[nzIndex].i == i && mat.coo[nzIndex].j == j) {
+                fprintf(logFile, "%s", nzAsStr[nzIndex]);
+                nzIndex += 1;
             }
             else {
                 fprintf(logFile, "%s", (mat.type == FLOAT) ? "0.0" : "0");

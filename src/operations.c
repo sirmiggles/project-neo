@@ -16,7 +16,7 @@
 /*  Calculate the trace of a square matrix  */
 /*  Generic case - O(n) | n = numNonZero    */
 /*  In SM terms, O((w x h) / 10)            */
-float trace(Matrix matrix) {
+double trace(Matrix matrix) {
     double trace = 0.0;
     int i;
     #pragma omp parallel for reduction (+:trace)
@@ -25,15 +25,15 @@ float trace(Matrix matrix) {
             trace += matrix.coo[i].value;
         }
     }
-    return (float) trace;
+    return trace;
 }
 
 /*  Scalar Multiply a given matrix  */
 /*  Generic Case - O(n) | n = numNonZero  */
 /*  In SM terms, O((w x h) / 10)            */
-void scalarMultiply(Matrix* matrix, float scalar) {
+void scalarMultiply(Matrix* matrix, double scalar) {
     int i;
-    float value;
+    double value;
     #pragma omp parallel for private(value)
     for (i = 0; i < matrix->numNonZero; i++) {
         value = matrix->coo[i].value * scalar;
@@ -158,28 +158,12 @@ Matrix matrixMultiply(Matrix matrix1, Matrix matrix2) {
     }
     
     output.numNonZero = 0;
-    printf("M1 NNZ: %d\n", matrix1.numNonZero);
-    int sum1 = 0;
-    
-    for (int i = 0; i < matrix1.numRows; i++) {
-        sum1 += m1NZInRow[i];
-    }
-    printf("Recorded NNZ: %d\n\n", sum1);
-    printf("M2 NNZ: %d\n", matrix2.numNonZero);
-    int sum2 = 0;
-    for (int i = 0; i < matrix2.numCols; i++) {
-        sum2 += m2NZInCol[i];
-    }
-    printf("Recorded NNZ: %d\n\n", sum2);
-    
-    for (int i = 0; i < matrix1.numRows; i++) {
-        // printf("%d\n", i);
-        for (int j = 0; j < matrix2.numCols; j++) {
-            float dot = dotProduct(m1Rows[i], m2Cols[j], m1NZInRow[i], m2NZInCol[j]);
-            //printf("%10.6f | %s\n", dot, (dot != 0) ? "true" : "false");
+    int i, j;
+    for (i = 0; i < matrix1.numRows; i++) {
+        for (j = 0; j < matrix2.numCols; j++) {
+            double dot = dotProduct(m1Rows[i], m2Cols[j], m1NZInRow[i], m2NZInCol[j]);
             if (dot != 0) {
                 CoordForm c = {i, j, dot};
-                //printf("%d | %d : %10.6f\n", c.i, c.j, c.value);
                 output.coo[output.numNonZero] = c;
                 output.numNonZero += 1;
             }
@@ -192,7 +176,7 @@ Matrix matrixMultiply(Matrix matrix1, Matrix matrix2) {
 
 /*  Return the dot product of two vectors  */
 /*  Average Case - O(m(n - m + 1))         */
-float dotProduct(CoordForm* v1, CoordForm* v2, int v1NZ, int v2NZ) {
+double dotProduct(CoordForm* v1, CoordForm* v2, int v1NZ, int v2NZ) {
     int v2Head = 0;
     double dotP = 0.0;
     /*  Shrinking search for matching rows  */
@@ -212,7 +196,7 @@ float dotProduct(CoordForm* v1, CoordForm* v2, int v1NZ, int v2NZ) {
             }
         }
     }
-    return (float) dotP;
+    return (double) dotP;
 }
 
 

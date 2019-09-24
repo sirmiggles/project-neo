@@ -149,7 +149,7 @@ void allocateDimensions(Matrix* targetMatrix, char* strNumRows, char* strNumCols
 }
 
 void convertToCOO(Matrix* targetMatrix, char* strElement, int row, int col) {
-    float val = strToFloat(strElement);
+    double val = strToDouble(strElement);
     if (val != 0) {
         CoordForm c = {row, col, val};
         targetMatrix->coo[targetMatrix->numNonZero] = c;

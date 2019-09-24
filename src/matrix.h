@@ -34,18 +34,10 @@ enum EXEC_FLAG_VALUES {
 struct CoordForm {
     int     i;              //  Row Index
     int     j;              //  Column Index
-    float   value;
+    double   value;
 };
 
 typedef struct CoordForm CoordForm;
-
-struct CSR {
-    int    numNonZero;
-    float* values;
-    int*   colIndex;
-    int*   rowPtr;
-};
-typedef struct CSR CSR;
 
 /*  Struct holding the key matrix information */
 struct Matrix {
@@ -72,18 +64,20 @@ extern  const   int         DEFAULT_THREAD_COUNT;
 extern  void        usage(void);
 extern  bool        sufficientArgs(int, int);
 extern  int         strToInt(char*);
-extern  float       strToFloat(char*);
+extern  double      strToDouble(char*);
 extern  void        resizeCOO(CoordForm*, int);
 extern  int         cooComparator(const void*, const void*);
 extern  void        printCOO(Matrix);
 extern  CoordForm** colFilter(Matrix, int*);
 extern  CoordForm** rowFilter(Matrix, int*);
 extern  char**      nzToStr(Matrix);
+
+/*  Logging function definitions  */
 extern  FILE*       openLogFile(struct tm *, enum EXEC_FLAG_VALUES);
-extern  void        outputToLogTR(FILE*, Matrix, int, float, float, float);
-extern  void        outputToLogSMTS(FILE*, Matrix, int, float, float, enum EXEC_FLAG_VALUES);
-extern  void        outputToLogADMM(FILE*, Matrix[2], Matrix, int, float, float, enum EXEC_FLAG_VALUES);
-extern  void        printAsMatrix(FILE*, Matrix);
+extern  void        outputToLogTR(FILE*, Matrix, int, double, double, double);
+extern  void        outputToLogSMTS(FILE*, Matrix, char**, int, double, double, enum EXEC_FLAG_VALUES);
+extern  void        outputToLogADMM(FILE*, Matrix[2], Matrix, char**, int, double, double, enum EXEC_FLAG_VALUES);
+extern  void        printAsMatrix(FILE*, Matrix, char**);
 
 /*  File I/O function definitiions */
 extern  void    parseFileName(int*, char*, char*);
@@ -96,9 +90,9 @@ extern  void    allocateDimensions(Matrix*, char*, char*);
 extern  void    convertToCOO(Matrix*, char*, int, int);
 
 /*  Matrix operation functions definitions  */
-extern  float       trace(Matrix);
-extern  void        scalarMultiply(Matrix*, float);
+extern  double       trace(Matrix);
+extern  void        scalarMultiply(Matrix*, double);
 extern  void        transpose(Matrix*);
 extern  Matrix      add(Matrix, Matrix);
 extern  Matrix      matrixMultiply(Matrix, Matrix);
-extern  float       dotProduct(CoordForm*, CoordForm*, int, int);
+extern  double       dotProduct(CoordForm*, CoordForm*, int, int);
