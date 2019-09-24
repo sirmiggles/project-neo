@@ -171,10 +171,12 @@ int main(int argc, char **argv) {
                 fprintf(stderr, "Matrix 0's number of columns do not match with Matrix 1's number of rows\n");
                 return -1;
             }
-            
+            gettimeofday(&opStart, NULL);
             Matrix output = matrixMultiply(matrices[0], matrices[1]);
+            gettimeofday(&opEnd, NULL);
             printCOO(output);
             break;
+
         default :
             fprintf(stderr, "No operation found!\n");
             return -1;
@@ -182,6 +184,6 @@ int main(int argc, char **argv) {
     }
 
     float opDelta = ((opEnd.tv_sec  - opStart.tv_sec) * 1000000u + opEnd.tv_usec - opStart.tv_usec) / 1.e6;
-    printf("Time for operation: %10.6f\n", opDelta);
+    printf("Time for operation: %10.6fs\n", opDelta);
     return 0;
 }
