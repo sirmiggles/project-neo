@@ -133,30 +133,21 @@ Matrix matrixMultiply(Matrix matrix1, Matrix matrix2) {
         return output;
     }
     
-    CoordForm** m1Rows = malloc(sizeof(CoordForm) * (matrix1.numRows + matrix1.numCols));
-    for (int i = 0; i < matrix1.numRows; i++) {
-        m1Rows[i] = malloc(sizeof(CoordForm) * matrix1.numCols);
+    //  Filter and sort the NZ elements of M2 by column
+    int* nzInCol = (int *) calloc(matrix2.numCols, sizeof(CoordForm));
+    if (!nzInCol) {
+        output.type = ERR;
+        return output;
     }
 
-    int m1NZIndex = 0;
-    for (int i = 0; i < matrix1.numRows; i++) {
-        CoordForm* currRow = m1Rows[i];
-        int elemInRow = 0;
-        for (int j = m1NZIndex; j < matrix1.numNonZero; j++) {
-            CoordForm coo = matrix1.coo[j];
-            if (coo.i == i) {
-                currRow[elemInRow] = coo;
-                elemInRow += 1;
-            }
-            if (coo.j + 1 == matrix1.numCols) {
-                m1NZIndex += 1;
-                break;
-            }
-        }
+    CoordForm** m2Cols = colFilter(matrix2, nzInCol);
+    if (!m2Cols) {
+        output.type = ERR;
+        return output;
+    }
 
-        for (int j = 0; j < elemInRow; j++) {
-            printf("%d | %d : %10.6f\n", currRow[j].i, currRow[j].j, currRow[j].value);
-        } 
+    for (int i = 0; i < matrix2.numCols; i++) {
+        printf("NNZ: %d\n", nzInCol[i]);
     }
 
     return output;
