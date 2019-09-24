@@ -109,7 +109,6 @@ Matrix add(Matrix matrix1, Matrix matrix2) {
         }
     }
         
-
     //  Copy noMatches, if no matches exist
     if (noMatchIndex > 0) {
         memcpy(output.coo + output.numNonZero, noMatch, sizeof(CoordForm) * (noMatchIndex + 1));
@@ -134,23 +133,86 @@ Matrix matrixMultiply(Matrix matrix1, Matrix matrix2) {
     }
     
     //  Filter and sort the NZ elements of M2 by column
-    int* nzInCol = (int *) calloc(matrix2.numCols, sizeof(CoordForm));
-    if (!nzInCol) {
+    int* m2NZInCol = (int *) calloc(matrix2.numCols, sizeof(CoordForm));
+    if (!m2NZInCol) {
         output.type = ERR;
         return output;
     }
 
-    CoordForm** m2Cols = colFilter(matrix2, nzInCol);
+    CoordForm** m2Cols = colFilter(matrix2, m2NZInCol);
     if (!m2Cols) {
         output.type = ERR;
         return output;
     }
 
-    for (int i = 0; i < matrix2.numCols; i++) {
-        printf("NNZ: %d\n", nzInCol[i]);
+    int* m1NZInRow = (int *) calloc(matrix1.numRows, sizeof(CoordForm));
+    if(!m1NZInRow) {
+        output.type = ERR;
+        return output;
     }
 
+    CoordForm** m1Rows = rowFilter(matrix1, m1NZInRow);
+    if (!m1Rows) {
+        output.type = ERR;
+        return output;
+    }
+    
+    output.numNonZero = 0;
+    printf("M1 NNZ: %d\n", matrix1.numNonZero);
+    int sum1 = 0;
+    
+    for (int i = 0; i < matrix1.numRows; i++) {
+        sum1 += m1NZInRow[i];
+    }
+    printf("Recorded NNZ: %d\n\n", sum1);
+    printf("M2 NNZ: %d\n", matrix2.numNonZero);
+    int sum2 = 0;
+    for (int i = 0; i < matrix2.numCols; i++) {
+        sum2 += m2NZInCol[i];
+    }
+    printf("Recorded NNZ: %d\n\n", sum2);
+    
+    for (int i = 0; i < matrix1.numRows; i++) {
+        // printf("%d\n", i);
+        for (int j = 0; j < matrix2.numCols; j++) {
+            float dot = dotProduct(m1Rows[i], m2Cols[j], m1NZInRow[i], m2NZInCol[j]);
+            //printf("%10.6f | %s\n", dot, (dot != 0) ? "true" : "false");
+            if (dot != 0) {
+                CoordForm c = {i, j, dot};
+                //printf("%d | %d : %10.6f\n", c.i, c.j, c.value);
+                output.coo[output.numNonZero] = c;
+                output.numNonZero += 1;
+            }
+        }
+    }
+
+    resizeCOO(output.coo, output.numNonZero);
     return output;
+}
+
+/*  Return the dot product of two vectors  */
+/*  Average Case - O(m(n - m + 1))         */
+float dotProduct(CoordForm* v1, CoordForm* v2, int v1NZ, int v2NZ) {
+    int v2Head = 0;
+    double dotP = 0.0;
+    /*  Shrinking search for matching rows  */
+    #pragma omp parallel firstprivate(v2Head)
+    {
+        #pragma omp for reduction (+:dotP)
+        for (int i = 0; i < v1NZ; i++) {
+            for (int j = v2Head; j < v2NZ; j++) {
+                if (v1[i].j == v2[j].i) {
+                    dotP += v1[i].value * v2[j].value;
+                    v2Head += 1;
+                    break;
+                }
+                if (v1[i].j > v2[j].i) {
+                    v2Head += 1;
+                }
+            }
+        }
+    }
+    return (float) dotP;
 }
 
 

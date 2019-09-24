@@ -74,6 +74,7 @@ extern  void        resizeCOO(CoordForm*, int);
 extern  int         cooComparator(const void*, const void*);
 extern  void        printCOO(Matrix);
 extern  CoordForm** colFilter(Matrix, int*);
+extern  CoordForm** rowFilter(Matrix, int*);
 
 /*  File I/O function definitiions */
 extern  void    parseFileName(int*, char*, char*);
@@ -91,3 +92,4 @@ extern  void        scalarMultiply(Matrix*, float);
 extern  void        transpose(Matrix*);
 extern  Matrix      add(Matrix, Matrix);
 extern  Matrix      matrixMultiply(Matrix, Matrix);
+extern  float       dotProduct(CoordForm*, CoordForm*, int, int);

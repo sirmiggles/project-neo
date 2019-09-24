@@ -152,6 +152,7 @@ void convertToCOO(Matrix* targetMatrix, char* strElement, int row, int col) {
     float val = strToFloat(strElement);
     if (val != 0) {
         CoordForm c = {row, col, val};
-        targetMatrix->coo[targetMatrix->numNonZero++] = c;
+        targetMatrix->coo[targetMatrix->numNonZero] = c;
+        targetMatrix->numNonZero += 1;
     }
 }

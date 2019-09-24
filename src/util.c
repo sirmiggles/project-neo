@@ -66,12 +66,16 @@ void resizeCOO(CoordForm* coo, int newSize) {
 
 /*  Prints out the matrix in COO form  */
 void printCOO(Matrix matrix) {
-    // printf("NNZ: %d\n", matrix.numNonZero);
+    printf("NNZ: %d\n", matrix.numNonZero);
+    /* 
     printf("[\n");
     for (int i = 0; i < matrix.numNonZero; i++) {
         printf("(%d, %d, %10.6f) \n", matrix.coo[i].i, matrix.coo[i].j, matrix.coo[i].value);
     }
     printf("]\n");
+     */
+    printf("(%d, %d, %10.6f) \n", matrix.coo[0].i, matrix.coo[0].j, matrix.coo[0].value);
+    printf("(%d, %d, %10.6f) \n", matrix.coo[matrix.numNonZero - 1].i, matrix.coo[matrix.numNonZero - 1].j, matrix.coo[matrix.numNonZero - 1].value);
 }
 
 /*  For sorting back to order  */
@@ -117,7 +121,32 @@ CoordForm** colFilter(Matrix mat, int* nzInCol) {
     return output;
 }
 
-/*  Rebuild the resultant matrix  */
+CoordForm** rowFilter(Matrix mat, int* nzInRow) {
+    CoordForm** output = malloc(sizeof(CoordForm) * (mat.numRows + mat.numCols));
+    for (int i = 0; i < mat.numRows; i++) {
+        output[i] = malloc(sizeof(CoordForm) * mat.numCols);
+        if (!output[i]) {
+            return NULL;
+        }
+    }
+
+    for (int i = 0; i < mat.numNonZero; i++) {
+        CoordForm c = mat.coo[i];
+        int rowOfC  = c.i;
+        CoordForm* row = output[rowOfC];
+        row[nzInRow[rowOfC]] = c;
+        nzInRow[rowOfC] += 1;
+    }
+
+    for (int i = 0; i < mat.numRows; i++) {
+        if (nzInRow[i] < mat.numRows) {
+            resizeCOO(output[i], nzInRow[i]);
+        }
+    }
+
+    return output;
+}
+
 //  void rebuildMatrix() {}
 
 
