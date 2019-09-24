@@ -2,7 +2,7 @@
     Name:           fileReader.c
     Description:    Contains the functions for File I/O
     Author:         MIGUEL ARIES SAMBAT TABADERO (22240204)
-    Last Modified:  18/9/2019
+    Last Modified:  25/9/2019
 */
 #include <stdio.h>
 #include <stdlib.h>

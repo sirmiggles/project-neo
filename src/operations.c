@@ -2,7 +2,7 @@
     File Name:      operations.c
     Description:    Source file for the matrix operations to be executed
     Author:         MIGUEL ARIES SAMBAT TABADERO (22240204)
-    Last Modified:  13/9/2019
+    Last Modified:  25/9/2019
 */
 
 #include <stdio.h>

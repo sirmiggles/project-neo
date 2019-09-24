@@ -5,10 +5,10 @@
     Last Modified:  25/9/2019
 */
 
-#include "matrix.h"
-
 #include <stdio.h>
 #include <time.h>
+
+#include "matrix.h"
 
 /*  Open a file for logging  */
 FILE* openLogFile(struct tm *time, enum EXEC_FLAG_VALUES efv) {

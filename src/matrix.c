@@ -3,7 +3,7 @@
     Description:    Main C File for matrix
                     > Contains the entry point (main) for the program
     Author:         MIGUEL ARIES SAMBAT TABADERO (22240204)
-    Last Modified:  18/9/2019
+    Last Modified:  25/9/2019
 */
 
 #include <stdio.h>
@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
     }
 
     time_t t = time(NULL);
-    struct tm *execStart = localtime(&t);
+    struct tm *execStart = localtime(&t);   //  Timestamp for program run
 
     enum EXEC_FLAG_VALUES efv = UD;         //  Execution flag value, based on enum
     bool log = false;                       //  Will the execution output a log file
@@ -188,6 +188,7 @@ int main(int argc, char **argv) {
                 fprintf(stderr, "Error occurred during matrix addition\n");
                 return -1;
             }
+
             opDelta = ((opEnd.tv_sec  - opStart.tv_sec) * 1000000u + opEnd.tv_usec - opStart.tv_usec) / 1.e6;
             if (log == true) {
                 logFile = openLogFile(execStart, efv);
@@ -202,6 +203,7 @@ int main(int argc, char **argv) {
                 fprintf(stderr, "Matrix 0's number of columns do not match with Matrix 1's number of rows\n");
                 return -1;
             }
+
             gettimeofday(&opStart, NULL);
             out = matrixMultiply(matrices[0], matrices[1]);
             gettimeofday(&opEnd, NULL);
@@ -209,6 +211,7 @@ int main(int argc, char **argv) {
                 fprintf(stderr, "Error occurred during matrix multiplication\n");
                 return -1;
             }
+
             opDelta = ((opEnd.tv_sec  - opStart.tv_sec) * 1000000u + opEnd.tv_usec - opStart.tv_usec) / 1.e6;
             if (log == true) {
                 logFile = openLogFile(execStart, efv);
@@ -222,6 +225,12 @@ int main(int argc, char **argv) {
             fprintf(stderr, "No operation found!\n");
             return -1;
             break;
+
+    }
+    
+    //  Free files before exit
+    for (int i = 0; i < matrixCount; i++) {
+        free(fileNames[i]);
     }
     return 0;
 }
