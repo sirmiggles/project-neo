@@ -66,13 +66,14 @@ extern  const int        ELEMENT_SIZE;
 extern  const int        DEFAULT_THREAD_COUNT;
 
 /*  Utility function definitions  */
-extern  void    usage(void);
-extern  bool    sufficientArgs(int, int);
-extern  int     strToInt(char*);
-extern  float   strToFloat(char*);
-extern  void    resizeCOO(CoordForm*, int);
-extern  int     cooComparator(const void*, const void*);
-extern  void    printCOO(Matrix);
+extern  void        usage(void);
+extern  bool        sufficientArgs(int, int);
+extern  int         strToInt(char*);
+extern  float       strToFloat(char*);
+extern  void        resizeCOO(CoordForm*, int);
+extern  int         cooComparator(const void*, const void*);
+extern  void        printCOO(Matrix);
+extern  CoordForm** colFilter(Matrix, int*);
 
 /*  File I/O function definitiions */
 extern  void    parseFileName(int*, char*, char*);
