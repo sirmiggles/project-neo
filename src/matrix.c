@@ -125,6 +125,8 @@ int main(int argc, char **argv) {
 
     struct timeval opStart, opEnd;
     float tr; 
+    char** nzAsStr;
+    Matrix out;
     switch (efv) {
         case SM :
             gettimeofday(&opStart, NULL);
@@ -160,10 +162,11 @@ int main(int argc, char **argv) {
                 return -1;
             }
             gettimeofday(&opStart, NULL);
-            Matrix out = add(matrices[0], matrices[1]);
-            matrices[0] = out;
+            out = add(matrices[0], matrices[1]);
             gettimeofday(&opEnd, NULL);
-            printCOO(out);
+            if (log == true) {
+                nzAsStr = nzToStr(out);
+            }
             break;
 
         case MM :
@@ -172,9 +175,11 @@ int main(int argc, char **argv) {
                 return -1;
             }
             gettimeofday(&opStart, NULL);
-            Matrix output = matrixMultiply(matrices[0], matrices[1]);
+            out = matrixMultiply(matrices[0], matrices[1]);
             gettimeofday(&opEnd, NULL);
-            printCOO(output);
+            if (log == true) {
+                nzAsStr = nzToStr(out);
+            }
             break;
 
         default :

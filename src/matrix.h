@@ -75,6 +75,7 @@ extern  int         cooComparator(const void*, const void*);
 extern  void        printCOO(Matrix);
 extern  CoordForm** colFilter(Matrix, int*);
 extern  CoordForm** rowFilter(Matrix, int*);
+extern  char**      nzToStr(Matrix);
 
 /*  File I/O function definitiions */
 extern  void    parseFileName(int*, char*, char*);

@@ -147,6 +147,32 @@ CoordForm** rowFilter(Matrix mat, int* nzInRow) {
     return output;
 }
 
-//  void rebuildMatrix() {}
+char** nzToStr(Matrix mat) {
+    int numberSize = 10;            //  Length of INT_MAX is 10 char
+    if (mat.type == FLOAT) {
+        numberSize = 17;            //  10 dig, 6 dp, 1 . = 17 char
+    }
+    char** nzAsStr = malloc(sizeof(char) * (mat.numNonZero * numberSize));
+    if (!nzAsStr) {
+        return NULL;
+    }
+
+    if (mat.type == FLOAT) {
+        for (int i = 0; i < mat.numNonZero; i++) {
+            size_t memNeeded = snprintf(NULL, 0, "%10.6f", mat.coo[i].value);
+            nzAsStr[i] = (char*) malloc(sizeof(char) * (memNeeded + 1));
+            sprintf(nzAsStr[i], "%10.6f", mat.coo[i].value);
+        }
+    }
+    else {
+        for (int i = 0; i < mat.numNonZero; i++) {
+            size_t memNeeded = snprintf(NULL, 0, "%d", (int) mat.coo[i].value);
+            nzAsStr[i] = (char*) malloc(sizeof(char) * (memNeeded + 1));
+            sprintf(nzAsStr[i], "%d", (int) mat.coo[i].value);
+        }
+    }
+
+    return nzAsStr;
+}
 
 
