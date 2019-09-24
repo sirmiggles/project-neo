@@ -88,7 +88,7 @@ Matrix add(Matrix matrix1, Matrix matrix2) {
     int noMatchIndex = 0;
 
     int i, j;
-    #pragma omp parallel shared(minIndex, noMatchIndex)
+    #pragma omp parallel firstprivate(minIndex, noMatchIndex)
     {
         #pragma omp for
         for (i = 0; i < output.numNonZero; i++) {
