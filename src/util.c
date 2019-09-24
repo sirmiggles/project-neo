@@ -66,7 +66,7 @@ void resizeCOO(CoordForm* coo, int newSize) {
 
 /*  Prints out the matrix in COO form  */
 void printCOO(Matrix matrix) {
-    printf("NNZ: %d\n", matrix.numNonZero);
+    // printf("NNZ: %d\n", matrix.numNonZero);
     printf("[\n");
     for (int i = 0; i < matrix.numNonZero; i++) {
         printf("(%d, %d, %10.6f) \n", matrix.coo[i].i, matrix.coo[i].j, matrix.coo[i].value);
@@ -89,6 +89,33 @@ int cooComparator(const void *p, const void *r) {
     }
 }
 
+/*  Filter Matrix by Column  */
+CoordForm** colFilter(Matrix mat, int* nzInCol) {
+    CoordForm** output = malloc(sizeof(CoordForm) * (mat.numCols * mat.numRows));
+    for (int i = 0; i < mat.numCols; i++) {
+        output[i] = malloc(sizeof(CoordForm) * mat.numRows);
+        if (!output[i]) {
+            return NULL;
+        }
+    }
+
+    for (int i = 0; i < mat.numNonZero; i++) {
+        CoordForm c = mat.coo[i];
+        int colOfC = c.j;
+        CoordForm* col = output[colOfC];
+        col[nzInCol[colOfC]] = c;
+        nzInCol[colOfC] += 1;
+    }
+
+    //  Resize and save space
+    for (int i = 0; i < mat.numCols; i++) {
+        if (nzInCol[i] < mat.numRows) {
+            resizeCOO(output[i], nzInCol[i]);
+        }
+    }
+
+    return output;
+}
 
 /*  Rebuild the resultant matrix  */
 //  void rebuildMatrix() {}
