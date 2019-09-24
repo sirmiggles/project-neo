@@ -32,6 +32,7 @@ double trace(Matrix matrix) {
 /*  Generic Case - O(n) | n = numNonZero  */
 /*  In SM terms, O((w x h) / 10)            */
 void scalarMultiply(Matrix* matrix, double scalar) {
+    matrix->type = FLOAT;
     int i;
     double value;
     #pragma omp parallel for private(value)
