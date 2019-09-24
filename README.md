@@ -1,7 +1,7 @@
 # Project NEO
 Repository for the CITS3402 (High Performance Computing) Project I for 2019 relating to matrix operations.
 
-## Install instructions
+## Compiling the Source
 
 To compile the source files, simply run
 
@@ -21,3 +21,31 @@ make matrix
     > To compile for MacOS, alter the variable `CC` in the makefile from `gcc` to `cc`
 
 2. Please do not move the makefile from its current directory as this will prevent the program from compiling
+
+## Running the program
+
+To execute the program, simply run matrix from its current directory in the command line:
+
+```
+./matrix <op> (<op_arg>) -f <file_1> (<file_2>) (<optional_flags>)
+```
+
+### Execution Flags
+
+```
+-f  <file_1> (<file_2>)     = load the files necessary, file_2 is only needed for two matrix operations
+-t  <num_threads>           = set the number of threads to num_threads, num_threads >= 1
+-l                          = indicator flag of if a log produced
+```
+
+### Matrix Operations
+
+```
+Single Matrix:
+-sm /%f     =   scalar multiplication, by scalar factor f
+-tr         =   trace
+-ts         =   transpose
+
+Two Matrix:
+-ad     =   matrix addition of file_1 and file_2
+-mm     =   matrix multiplication --> file_1 x file_2
