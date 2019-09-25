@@ -24,11 +24,17 @@ make matrix
 
 ## Running the program
 
-To execute the program, simply run matrix from its current directory in the command line:
+To execute the program, simply run `matrix` from its current directory in the command line:
 
 ```
 ./matrix <op> (<op_arg>) -f <file_1> (<file_2>) (<optional_flags>)
 ```
+
+**NOTE**: 
+
+If program is executed with the `-t` tag omitted, the program will execute in *single-thread* mode as default with no multi-threading, i.e. `num_threads = 1`.
+
+Including this tag and the associated number of threads, the program will then execute in *parallel* mode
 
 ### Execution Flags
 
