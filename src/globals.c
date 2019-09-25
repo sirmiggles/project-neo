@@ -30,4 +30,4 @@ const int FILEPATH_MAX      = 256;                  //  Buffer size for file pat
 const int DIM_BUFSIZ        = 256;                  //  Maximum characters for the dimensions lines
 const int ELEMENT_SIZE      = 256;                  //  Maximum No. of characters for an element;
 
-const int DEFAULT_THREAD_COUNT = 4;                 //  The default number of threads to create
+const int DEFAULT_THREAD_COUNT = 1;                 //  The default number of threads to create
