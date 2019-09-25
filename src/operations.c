@@ -197,8 +197,5 @@ double dotProduct(CoordForm* v1, CoordForm* v2, int v1NZ, int v2NZ) {
             }
         }
     }
-    return (double) dotP;
+    return dotP;
 }
-
-
-

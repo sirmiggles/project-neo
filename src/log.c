@@ -51,6 +51,7 @@ void outputToLogSMTS(FILE* logFile, Matrix mat, char** nzAsStr, int numThreads, 
     fprintf(logFile, "%10.6f", delta_op);
 }
 
+/*  Output to log file for AD and MM operations  */
 void outputToLogADMM(FILE* logFile, Matrix mat[2], Matrix out, char** nzAsStr, int numThreads, double delta_io, double delta_op, enum EXEC_FLAG_VALUES efv) {
     fprintf(logFile, "%s\n", FLAGS[efv]);
     for (int i = 0; i < 2; i++) {
@@ -62,6 +63,7 @@ void outputToLogADMM(FILE* logFile, Matrix mat[2], Matrix out, char** nzAsStr, i
     fprintf(logFile, "%10.6f", delta_op);
 }
 
+/*  Reconstructs the matrix to the logfile  */
 void printAsMatrix(FILE* logFile, Matrix mat, char** nzAsStr) {
     int nzIndex = 0;
     for (int i = 0; i < mat.numRows; i++) {
@@ -80,4 +82,3 @@ void printAsMatrix(FILE* logFile, Matrix mat, char** nzAsStr) {
     }
     fprintf(logFile, "\n");
 }
-

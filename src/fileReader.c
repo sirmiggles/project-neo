@@ -23,7 +23,7 @@ void parseFileName(int *matrixCount, char* fileArg, char* matFileName) {
     }
 }
 
-/*  Check if file exists and can be read */
+/*  Check if file exists and can be read  */
 bool fileAccessible(char* fileName) {
     return (access(fileName, F_OK) != -1 && access(fileName, R_OK) != -1)   \
             ? true : false;
@@ -148,6 +148,7 @@ void allocateDimensions(Matrix* targetMatrix, char* strNumRows, char* strNumCols
     }
 }
 
+/*  Convert to non-zero COO  */
 void convertToCOO(Matrix* targetMatrix, char* strElement, int row, int col) {
     double val = strToDouble(strElement);
     if (val != 0) {

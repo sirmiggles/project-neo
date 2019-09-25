@@ -162,7 +162,3 @@ char** nzToStr(Matrix mat) {
 
     return nzAsStr;
 }
-
-
-
-

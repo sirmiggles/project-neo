@@ -90,9 +90,9 @@ extern  void    allocateDimensions(Matrix*, char*, char*);
 extern  void    convertToCOO(Matrix*, char*, int, int);
 
 /*  Matrix operation functions definitions  */
-extern  double       trace(Matrix);
-extern  void        scalarMultiply(Matrix*, double);
-extern  void        transpose(Matrix*);
-extern  Matrix      add(Matrix, Matrix);
-extern  Matrix      matrixMultiply(Matrix, Matrix);
-extern  double       dotProduct(CoordForm*, CoordForm*, int, int);
+extern  double  trace(Matrix);
+extern  void    scalarMultiply(Matrix*, double);
+extern  void    transpose(Matrix*);
+extern  Matrix  add(Matrix, Matrix);
+extern  Matrix  matrixMultiply(Matrix, Matrix);
+extern  double  dotProduct(CoordForm*, CoordForm*, int, int);
