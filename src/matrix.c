@@ -117,6 +117,7 @@ int main(int argc, char **argv) {
     FILE** readFiles = malloc(matrixCount * sizeof(FILE));
     openFiles(readFiles, fileNames, matrixCount);
     Matrix matrices[matrixCount];
+    #pragma omp parallel for
     for (int i = 0; i < matrixCount; i++) {
         parseMatrixFile(readFiles[i], &matrices[i], fileNames[i]);
     }
@@ -227,10 +228,11 @@ int main(int argc, char **argv) {
             break;
 
     }
-    
+    printf("Time taken for %s operation: %10.6fs\n", FLAGS[efv], opDelta);
     //  Free files before exit
     for (int i = 0; i < matrixCount; i++) {
         free(fileNames[i]);
     }
+    
     return 0;
 }
