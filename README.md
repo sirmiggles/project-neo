@@ -1,6 +1,8 @@
 # Project NEO
 Repository for the CITS3402 (High Performance Computing) Project I for 2019 relating to matrix operations.
 
+**Author**: Miguel Aries Sambat Tabadero (22240204)
+
 ## Compiling the Source
 
 To compile the source files, simply run
