@@ -231,6 +231,7 @@ int main(int argc, char **argv) {
     printf("Time taken for %s operation: %10.6fs\n", FLAGS[efv], opDelta);
     //  Free files before exit
     for (int i = 0; i < matrixCount; i++) {
+        free(matrices[i].coo);
         free(fileNames[i]);
     }
     

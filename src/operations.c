@@ -121,6 +121,8 @@ Matrix add(Matrix matrix1, Matrix matrix2) {
     return output;
 }
 
+/*  Perform matrix multiplication, matrix1 x matrix2  */
+/*  Generic Case: O(n^4) */
 Matrix matrixMultiply(Matrix matrix1, Matrix matrix2) {
     Matrix output;
     output.sourceFile = NULL;
@@ -158,6 +160,7 @@ Matrix matrixMultiply(Matrix matrix1, Matrix matrix2) {
         return output;
     }
     
+    //  Struggled to coordinate threads, as such only dotProduct is parallelized
     output.numNonZero = 0;
     int i, j;
     for (i = 0; i < matrix1.numRows; i++) {
